@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos de Ordenação - Gamificado</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">📚 Algoritmos de Ordenação - Aprendizado Passo a Passo</h1>
+                <div class="simple-stats">
+                    <span class="current-progress" id="currentProgress">Selecione um algoritmo para começar</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Algorithm Selection -->
+            <section class="algorithm-selection">
+                <h2>Escolha um Algoritmo</h2>
+                <div class="algorithm-cards">
+                    <div class="algorithm-card" data-algorithm="bubble">
+                        <div class="card-header">
+                            <h3>Bubble Sort</h3>
+                            <span class="difficulty easy">Fácil</span>
+                        </div>
+                        <p class="card-description">Compara elementos adjacentes e os troca se estiverem na ordem errada.</p>
+                        <div class="card-stats">
+                            <span>Complexidade: O(n²)</span>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-card" data-algorithm="selection">
+                        <div class="card-header">
+                            <h3>Selection Sort</h3>
+                            <span class="difficulty easy">Fácil</span>
+                        </div>
+                        <p class="card-description">Encontra o menor elemento e o coloca na posição correta.</p>
+                        <div class="card-stats">
+                            <span>Complexidade: O(n²)</span>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-card" data-algorithm="insertion">
+                        <div class="card-header">
+                            <h3>Insertion Sort</h3>
+                            <span class="difficulty medium">Médio</span>
+                        </div>
+                        <p class="card-description">Insere cada elemento na posição correta do subarray ordenado.</p>
+                        <div class="card-stats">
+                            <span>Complexidade: O(n²)</span>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-card" data-algorithm="quick">
+                        <div class="card-header">
+                            <h3>Quick Sort</h3>
+                            <span class="difficulty hard">Difícil</span>
+                        </div>
+                        <p class="card-description">Divide o array usando um pivô e ordena recursivamente.</p>
+                        <div class="card-stats">
+                            <span>Complexidade: O(n log n)</span>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-card" data-algorithm="merge">
+                        <div class="card-header">
+                            <h3>Merge Sort</h3>
+                            <span class="difficulty hard">Difícil</span>
+                        </div>
+                        <p class="card-description">Divide o array pela metade e mescla os resultados ordenados.</p>
+                        <div class="card-stats">
+                            <span>Complexidade: O(n log n)</span>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-card" data-algorithm="heap">
+                        <div class="card-header">
+                            <h3>Heap Sort</h3>
+                            <span class="difficulty hard">Difícil</span>
+                        </div>
+                        <p class="card-description">Usa heap (montículo) para extrair repetidamente o maior elemento.</p>
+                        <div class="card-stats">
+                            <span>Complexidade: O(n log n)</span>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-card" data-algorithm="radix">
+                        <div class="card-header">
+                            <h3>Radix Sort</h3>
+                            <span class="difficulty hard">Difícil</span>
+                        </div>
+                        <p class="card-description">Ordena processando dígito por dígito dos números.</p>
+                        <div class="card-stats">
+                            <span>Complexidade: O(nk)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visualization Area -->
+            <section class="visualization-area" id="visualizationArea" style="display: none;">
+                <div class="visualization-header">
+                    <h2 id="currentAlgorithm">Algoritmo Selecionado</h2>
+                    <div class="simple-controls">
+                        <div class="primary-controls">
+                            <button id="generateArray" class="btn btn-primary">📊 Novos Dados</button>
+                            <button id="startSort" class="btn btn-success">▶️ Começar</button>
+                            <button id="pauseSort" class="btn btn-warning">⏸️ Pausar</button>
+                            <button id="resumeSort" class="btn btn-info" style="display: none;">▶️ Continuar</button>
+                            <button id="resetSort" class="btn btn-secondary">🔄 Recomeçar</button>
+                        </div>
+                        <div class="speed-control">
+                            <label for="speedSlider">Velocidade:</label>
+                            <input type="range" id="speedSlider" min="1" max="3" value="2">
+                            <span id="speedValue">Normal</span>
+                        </div>
+                        <button id="backToSelection" class="btn btn-outline">← Voltar aos Algoritmos</button>
+                    </div>
+                </div>
+
+                <!-- Enhanced Educational Interface -->
+                <div class="educational-interface">
+                    <div class="education-tabs">
+                        <button class="edu-tab-btn active" data-tab="explanation">📚 Como Funciona</button>
+                        <button class="edu-tab-btn" data-tab="code">💻 Código</button>
+                        <button class="edu-tab-btn" data-tab="complexity">📊 Complexidade</button>
+                        <button class="edu-tab-btn" data-tab="quiz">🎯 Quiz</button>
+                    </div>
+                    
+                    <!-- How it Works Tab -->
+                    <div class="edu-tab-content active" id="explanation-tab">
+                        <div class="simple-explanation">
+                            <div class="algorithm-description">
+                                <h3 id="algorithmTitle">Como Funciona?</h3>
+                                <p id="algorithmDescription">Selecione um algoritmo para ver como ele funciona passo a passo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Steps Tab -->
+                    <div class="edu-tab-content" id="steps-tab">
+                        <div class="steps-section">
+                            <div class="current-step-display">
+                                <h3>� Passo Atual</h3>
+                                <div class="step-card">
+                                    <div class="step-number" id="stepNumber">1</div>
+                                    <div class="step-description">
+                                        <h4 id="stepTitle">Prepare-se para aprender!</h4>
+                                        <p id="currentStep">Clique em "Comecar" para ver o algoritmo funcionando passo a passo.</p>
+                                    </div>
+                                </div>
+                                <div class="step-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="progress-text" id="progressText">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Code Tab -->
+                    <div class="edu-tab-content" id="code-tab">
+                        <div class="code-section">
+                            <div class="code-patterns">
+                                <h4>💻 Padrões de Código Identificados</h4>
+                                <div class="pattern-legends">
+                                    <div class="pattern-legend">
+                                        <span class="pattern-color loop"></span>
+                                        <span>🔄 Loops (Repetição)</span>
+                                    </div>
+                                    <div class="pattern-legend">
+                                        <span class="pattern-color condition"></span>
+                                        <span>❓ Condições (Decisão)</span>
+                                    </div>
+                                    <div class="pattern-legend">
+                                        <span class="pattern-color swap"></span>
+                                        <span>🔄 Troca de elementos</span>
+                                    </div>
+                                    <div class="pattern-legend">
+                                        <span class="pattern-color recursion"></span>
+                                        <span>🌀 Recursão</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="algorithm-code">
+                                <pre id="algorithmCode"><code>// Selecione um algoritmo para ver seu código com padrões destacados</code></pre>
+                            </div>
+                            <div class="code-explanation" id="codeExplanation">
+                                <h5>📖 Explicação dos Padrões</h5>
+                                <div id="patternExplanations">
+                                    <p>Os padrões de código serão explicados aqui quando você selecionar um algoritmo.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Complexity Tab -->
+                    <div class="edu-tab-content" id="complexity-tab">
+                        <div class="complexity-section">
+                            <h4>📊 Visualização da Complexidade</h4>
+                            <div class="complexity-simulator">
+                                <div class="complexity-controls">
+                                    <label>Tamanho do Array (n):</label>
+                                    <input type="range" id="complexitySize" min="5" max="100" value="10">
+                                    <span id="complexitySizeValue">10</span>
+                                </div>
+                                <div class="complexity-chart" id="complexityChart">
+                                    <canvas id="complexityCanvas" width="400" height="200"></canvas>
+                                </div>
+                                <div class="complexity-explanation" id="complexityExplanation">
+                                    <p>Esta visualização mostra como o número de operações cresce conforme o tamanho do array aumenta.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Tab -->
+                    <div class="edu-tab-content" id="quiz-tab">
+                        <div class="quiz-section">
+                            <h4>🎯 Teste Seu Conhecimento</h4>
+                            <div class="quiz-question" id="quizQuestion">
+                                <h5 id="questionTitle">Pergunta aparecerá aqui</h5>
+                                <div class="quiz-options" id="quizOptions">
+                                    <!-- Quiz options will be generated here -->
+                                </div>
+                                <div class="quiz-feedback" id="quizFeedback"></div>
+                                <button id="nextQuestion" class="btn btn-primary quiz-btn" style="display: none;">Próxima Pergunta</button>
+                            </div>
+                            <div class="quiz-progress">
+                                <div class="quiz-score">
+                                    <span>Pontuação: <span id="quizScore">0</span></span>
+                                    <span>Questão: <span id="quizProgress">0/0</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visualization-wrapper">
+                    <div class="array-container">
+                        <div class="array-legend">
+                            <div class="legend-item">
+                                <div class="legend-color comparing"></div>
+                                <span>🔍 Comparando</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color swapping"></div>
+                                <span>🔄 Trocando</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color sorted"></div>
+                                <span>✅ Ordenado</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color current"></div>
+                                <span>👉 Atual</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color minimum"></div>
+                                <span>🎯 Menor</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color pivot"></div>
+                                <span>📍 Pivô</span>
+                            </div>
+                        </div>
+                        <div id="arrayBars" class="array-elements"></div>
+                        <div class="step-explanation" id="stepExplanation">
+                            <p>💡 <span id="currentStepExplanation">Prepare-se para ver a mágica dos algoritmos!</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="explanation-panel" id="explanationPanel">
+                        <div class="panel-header">
+                            <h3>📚 Como Funciona</h3>
+                            <span class="algorithm-name" id="algorithmExplanationName">Selecione um algoritmo</span>
+                        </div>
+                        
+                        <div class="current-action" id="currentAction">
+                            <div class="action-title">🎯 Ação Atual</div>
+                            <div class="action-description" id="actionDescription">
+                                Aguardando início...
+                            </div>
+                        </div>
+                        
+                        <div class="algorithm-logic" id="algorithmLogic">
+                            <div class="logic-title">🧠 Lógica do Algoritmo</div>
+                            <div class="logic-steps" id="logicSteps">
+                                <p>Selecione um algoritmo para ver como ele funciona passo a passo.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pattern-recognition" id="patternRecognition">
+                            <div class="pattern-title">🔍 Padrão Identificado</div>
+                            <div class="pattern-description" id="patternDescription">
+                                Os padrões aparecerão aqui conforme o algoritmo executa.
+                            </div>
+                        </div>
+                        
+                        <div class="next-prediction" id="nextPrediction">
+                            <div class="prediction-title">🔮 Próximo Passo</div>
+                            <div class="prediction-description" id="predictionDescription">
+                                Antecipe o que vai acontecer a seguir.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-info">
+                    <div class="progress-item">
+                        <span>Comparações:</span>
+                        <span id="comparisons">0</span>
+                    </div>
+                    <div class="progress-item">
+                        <span>Trocas:</span>
+                        <span id="swaps">0</span>
+                    </div>
+                    <div class="progress-item">
+                        <span>Tempo decorrido:</span>
+                        <span id="timeElapsed">0s</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comparison Mode -->
+            <section class="comparison-mode" id="comparisonMode" style="display: none;">
+                <div class="comparison-header">
+                    <h2>🔄 Modo Comparação</h2>
+                    <div class="comparison-controls">
+                        <select id="algorithm1Select" class="algorithm-select">
+                            <option value="bubble">Bubble Sort</option>
+                            <option value="selection">Selection Sort</option>
+                            <option value="insertion">Insertion Sort</option>
+                            <option value="quick">Quick Sort</option>
+                            <option value="merge">Merge Sort</option>
+                            <option value="heap">Heap Sort</option>
+                            <option value="radix">Radix Sort</option>
+                        </select>
+                        <span class="vs-text">VS</span>
+                        <select id="algorithm2Select" class="algorithm-select">
+                            <option value="selection">Selection Sort</option>
+                            <option value="bubble">Bubble Sort</option>
+                            <option value="insertion">Insertion Sort</option>
+                            <option value="quick">Quick Sort</option>
+                            <option value="merge">Merge Sort</option>
+                            <option value="heap">Heap Sort</option>
+                            <option value="radix">Radix Sort</option>
+                        </select>
+                        <button id="startComparison" class="btn btn-primary">Iniciar Comparação</button>
+                        <button id="exitComparison" class="btn btn-outline">Sair do Modo</button>
+                    </div>
+                </div>
+                <div class="comparison-containers">
+                    <div class="comparison-item">
+                        <h3 id="compAlg1Name">Algoritmo 1</h3>
+                        <div id="compArray1" class="comparison-array"></div>
+                        <div class="comparison-stats">
+                            <span>Comparações: <span id="compComparisons1">0</span></span>
+                            <span>Trocas: <span id="compSwaps1">0</span></span>
+                            <span>Tempo: <span id="compTime1">0s</span></span>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h3 id="compAlg2Name">Algoritmo 2</h3>
+                        <div id="compArray2" class="comparison-array"></div>
+                        <div class="comparison-stats">
+                            <span>Comparações: <span id="compComparisons2">0</span></span>
+                            <span>Trocas: <span id="compSwaps2">0</span></span>
+                            <span>Tempo: <span id="compTime2">0s</span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Dashboard -->
+            <section class="stats-dashboard" id="statsDashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>📊 Dashboard de Estatísticas</h2>
+                    <button id="closeDashboard" class="btn btn-outline">Fechar</button>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Algoritmo Mais Rápido</h3>
+                        <div class="stat-content" id="fastestAlgorithm">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Menor Número de Comparações</h3>
+                        <div class="stat-content" id="leastComparisons">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total de Ordenações</h3>
+                        <div class="stat-content" id="totalSorts">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Tempo Total Aprendendo</h3>
+                        <div class="stat-content" id="totalTimeSpent">0min</div>
+                    </div>
+                </div>
+                <div class="performance-chart">
+                    <h3>Performance por Algoritmo</h3>
+                    <canvas id="performanceChart" width="600" height="300"></canvas>
+                </div>
+            </section>
+
+            <!-- Daily Challenge Panel -->
+            <section class="daily-challenge-panel">
+                <div class="challenge-header">
+                    <h3>🎯 Desafio Diário</h3>
+                    <div class="streak-counter">
+                        <span class="streak-icon">🔥</span>
+                        <span class="streak-text">Sequência: <span id="streakCount">0</span> dias</span>
+                    </div>
+                </div>
+                <div class="challenge-content" id="dailyChallenge">
+                    <!-- Daily challenge will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Achievements Panel -->
+            <section class="achievements-panel">
+                <div class="achievements-header">
+                    <h3>🏆 Conquistas</h3>
+                    <div class="achievements-controls">
+                        <button id="compareBtn" class="btn btn-secondary">🔄 Comparar Algoritmos</button>
+                        <button id="statsBtn" class="btn btn-secondary">📊 Estatísticas</button>
+                        <button id="tutorialBtn" class="btn btn-secondary">🎓 Tutorial</button>
+                    </div>
+                </div>
+                <div class="achievements-list" id="achievementsList">
+                    <!-- Achievements will be populated by JavaScript -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Custom Data Modal -->
+        <div id="customDataModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>✏️ Entrada de Dados Personalizados</h3>
+                    <button id="closeCustomData" class="btn btn-outline">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="custom-data-section">
+                        <div class="data-type-selector">
+                            <h4>🎯 Tipo de Dados</h4>
+                            <div class="data-type-options">
+                                <button class="data-type-btn active" data-type="numbers">🔢 Números</button>
+                                <button class="data-type-btn" data-type="words">📝 Palavras</button>
+                                <button class="data-type-btn" data-type="phrases">💬 Frases</button>
+                            </div>
+                        </div>
+                        
+                        <div class="data-input-section">
+                            <div class="input-method-tabs">
+                                <button class="input-tab-btn active" data-method="manual">✏️ Manual</button>
+                                <button class="input-tab-btn" data-method="examples">🎨 Exemplos</button>
+                            </div>
+                            
+                            <!-- Manual Input -->
+                            <div class="input-method active" id="manual-input">
+                                <div class="input-group">
+                                    <label for="customDataInput">Digite seus dados (separados por vírgula ou espaço):</label>
+                                    <textarea id="customDataInput" class="custom-input" placeholder="Ex: 42, 13, 7, 89, 25 ou João, Maria, Pedro, Ana"></textarea>
+                                    <div class="input-hints">
+                                        <p class="hint-text">💡 Dicas:</p>
+                                        <ul class="hint-list">
+                                            <li><strong>Números:</strong> 42, 13, 7, 89, 25</li>
+                                            <li><strong>Palavras:</strong> João, Maria, Pedro, Ana</li>
+                                            <li><strong>Frases:</strong> "Bom dia", "Boa tarde", "Boa noite"</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Examples Input -->
+                            <div class="input-method" id="examples-input">
+                                <div class="examples-grid" id="examplesGrid">
+                                    <!-- Examples will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="data-preview">
+                            <h4>📋 Prévia dos Dados</h4>
+                            <div id="dataPreview" class="preview-container">
+                                <p class="preview-placeholder">Digite dados acima para ver a prévia...</p>
+                            </div>
+                            <div class="preview-stats">
+                                <span>Elementos: <span id="elementCount">0</span></span>
+                                <span>Tipo: <span id="dataTypeDisplay">-</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="clearCustomData" class="btn btn-outline">🗑️ Limpar</button>
+                    <button id="applyCustomData" class="btn btn-primary">✅ Aplicar Dados</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>⚙️ Configurações</h3>
+                    <button id="closeSettings" class="btn btn-outline">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label>🔊 Efeitos Sonoros</label>
+                        <input type="checkbox" id="soundEffects" checked>
+                    </div>
+                    <div class="setting-group">
+                        <label>🎨 Tema Escuro</label>
+                        <input type="checkbox" id="darkTheme" checked>
+                    </div>
+                    <div class="setting-group">
+                        <label>📏 Tamanho do Array</label>
+                        <input type="range" id="arraySizeSlider" min="5" max="50" value="15">
+                        <span id="arraySizeValue">15</span>
+                    </div>
+                    <div class="setting-group">
+                        <label>🎯 Mostrar Valores nos Bars</label>
+                        <input type="checkbox" id="showValues" checked>
+                    </div>
+                    <div class="setting-group">
+                        <label>⏱️ Mostrar Tempo Detalhado</label>
+                        <input type="checkbox" id="detailedTiming" checked>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="resetSettings" class="btn btn-outline">Restaurar Padrões</button>
+                    <button id="saveSettings" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tutorial Modal -->
+        <div id="tutorialModal" class="modal tutorial-modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🎓 Tutorial Interativo</h3>
+                    <button id="closeTutorial" class="btn btn-outline">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="tutorial-step" id="tutorialStep">
+                        <div class="tutorial-content">
+                            <h4 id="tutorialTitle">Bem-vindo!</h4>
+                            <p id="tutorialText">Vamos aprender como usar esta aplicação passo a passo.</p>
+                            <div class="tutorial-image" id="tutorialImage"></div>
+                        </div>
+                        <div class="tutorial-navigation">
+                            <button id="prevTutorial" class="btn btn-outline">← Anterior</button>
+                            <span id="tutorialProgress">1 / 6</span>
+                            <button id="nextTutorial" class="btn btn-primary">Próximo →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Toast Notifications -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <script src="js/algorithms.js"></script>
+    <script src="js/visualization.js"></script>
+    <script src="js/gamification.js"></script>
+    <script src="js/educational-system.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test - Sorting Visualization</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f2f5;
+        }
+        .debug-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .debug-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .debug-button:hover {
+            background: #45a049;
+        }
+        .debug-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Debug Test - Algoritmos de Ordenação</h1>
+    
+    <div class="debug-section">
+        <h2>1. Teste de Criação de Elementos</h2>
+        <button class="debug-button" onclick="testElementCreation()">Testar Criação de Elementos</button>
+        <div id="elementCreationResult"></div>
+        
+        <div class="array-container" style="margin-top: 20px;">
+            <div id="arrayVisualization" class="array-bars"></div>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>2. Teste de Animação CSS</h2>
+        <button class="debug-button" onclick="testCSSAnimation()">Testar Animação CSS</button>
+        <div id="cssAnimationResult"></div>
+        
+        <div class="test-animation-container" style="margin-top: 20px;">
+            <div id="testAnimationElements" class="array-bars"></div>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>3. Teste de Bubble Sort Básico</h2>
+        <button class="debug-button" onclick="testBubbleSortSteps()">Testar Geração de Steps</button>
+        <div id="bubbleSortResult"></div>
+        
+        <div class="steps-display" style="margin-top: 20px;">
+            <pre id="stepsOutput" style="background: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 12px; max-height: 200px; overflow-y: auto;"></pre>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>4. Teste de Visualização Controller</h2>
+        <button class="debug-button" onclick="testVisualizationController()">Testar VisualizationController</button>
+        <div id="visualizationControllerResult"></div>
+    </div>
+
+    <script src="js/algorithms.js"></script>
+    
+    <script>
+        let testVisualizationController = null;
+        
+        function showResult(elementId, success, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="test-result ${success ? 'success' : 'error'}">${success ? '✅' : '❌'} ${message}</div>`;
+        }
+        
+        function testElementCreation() {
+            try {
+                const container = document.getElementById('arrayVisualization');
+                container.innerHTML = '';
+                
+                const testArray = [64, 34, 25, 12, 22, 11, 90];
+                
+                testArray.forEach((value, index) => {
+                    const element = document.createElement('div');
+                    element.className = 'array-element';
+                    element.setAttribute('data-value', value);
+                    element.setAttribute('data-index', index);
+                    element.textContent = value;
+                    element.style.backgroundColor = '#e3f2fd';
+                    element.style.margin = '2px';
+                    element.style.padding = '8px';
+                    element.style.border = '1px solid #90caf9';
+                    element.style.borderRadius = '4px';
+                    element.style.display = 'inline-block';
+                    element.style.minWidth = '40px';
+                    element.style.textAlign = 'center';
+                    
+                    container.appendChild(element);
+                });
+                
+                showResult('elementCreationResult', true, `${testArray.length} elementos criados com sucesso!`);
+            } catch (error) {
+                showResult('elementCreationResult', false, `Erro na criação: ${error.message}`);
+            }
+        }
+        
+        function testCSSAnimation() {
+            try {
+                const container = document.getElementById('testAnimationElements');
+                container.innerHTML = '';
+                
+                const testArray = [5, 2, 8, 1, 9];
+                
+                testArray.forEach((value, index) => {
+                    const element = document.createElement('div');
+                    element.className = 'array-element';
+                    element.textContent = value;
+                    element.style.cssText = `
+                        background: #e3f2fd;
+                        margin: 2px;
+                        padding: 8px;
+                        border: 1px solid #90caf9;
+                        border-radius: 4px;
+                        display: inline-block;
+                        min-width: 40px;
+                        text-align: center;
+                        transition: all 0.3s ease;
+                    `;
+                    
+                    container.appendChild(element);
+                });
+                
+                // Test animation after 1 second
+                setTimeout(() => {
+                    const elements = container.children;
+                    elements[0].style.backgroundColor = '#ffcdd2'; // comparing
+                    elements[1].style.backgroundColor = '#ffcdd2'; // comparing
+                    
+                    setTimeout(() => {
+                        elements[0].style.backgroundColor = '#ffeb3b'; // swapping
+                        elements[1].style.backgroundColor = '#ffeb3b'; // swapping
+                        
+                        setTimeout(() => {
+                            elements[0].style.backgroundColor = '#c8e6c9'; // sorted
+                            elements[1].style.backgroundColor = '#c8e6c9'; // sorted
+                        }, 500);
+                    }, 500);
+                }, 1000);
+                
+                showResult('cssAnimationResult', true, 'Teste de animação iniciado! Observe as cores mudando.');
+            } catch (error) {
+                showResult('cssAnimationResult', false, `Erro na animação: ${error.message}`);
+            }
+        }
+        
+        function testBubbleSortSteps() {
+            try {
+                if (typeof SortingAlgorithms === 'undefined') {
+                    throw new Error('SortingAlgorithms não está disponível');
+                }
+                
+                const algorithms = new SortingAlgorithms();
+                const testArray = [64, 34, 25];
+                const steps = algorithms.bubbleSort([...testArray]);
+                
+                document.getElementById('stepsOutput').textContent = JSON.stringify(steps, null, 2);
+                showResult('bubbleSortResult', true, `${steps.length} steps gerados para Bubble Sort`);
+            } catch (error) {
+                showResult('bubbleSortResult', false, `Erro no Bubble Sort: ${error.message}`);
+            }
+        }
+        
+        function testVisualizationController() {
+            try {
+                // Mock dos elementos necessários
+                const mockArrayBars = document.createElement('div');
+                mockArrayBars.id = 'arrayVisualization';
+                document.body.appendChild(mockArrayBars);
+                
+                const mockElements = {
+                    arrayBars: mockArrayBars,
+                    currentStep: document.createElement('div'),
+                    stepNumber: document.createElement('div'),
+                    stepTitle: document.createElement('div'),
+                    progressFill: document.createElement('div'),
+                    progressText: document.createElement('div')
+                };
+                
+                // Simular VisualizationController básico
+                testVisualizationController = {
+                    array: [64, 34, 25, 12, 22],
+                    elements: mockElements,
+                    isCustomDataActive: false,
+                    customData: null,
+                    currentStepIndex: 0,
+                    steps: [],
+                    isAnimating: false,
+                    isPaused: false,
+                    animationSpeed: 1000,
+                    
+                    generateRandomArray() {
+                        this.array = [64, 34, 25, 12, 22];
+                        this.updateVisualization();
+                    },
+                    
+                    updateVisualization() {
+                        this.elements.arrayBars.innerHTML = '';
+                        this.array.forEach((value, index) => {
+                            const element = document.createElement('div');
+                            element.className = 'array-element';
+                            element.textContent = value;
+                            this.elements.arrayBars.appendChild(element);
+                        });
+                    },
+                    
+                    startSorting(algorithm) {
+                        if (typeof SortingAlgorithms === 'undefined') {
+                            throw new Error('SortingAlgorithms não disponível');
+                        }
+                        
+                        const algorithms = new SortingAlgorithms();
+                        this.steps = algorithms.bubbleSort([...this.array]);
+                        this.currentStepIndex = 0;
+                        this.isAnimating = true;
+                        return true;
+                    }
+                };
+                
+                testVisualizationController.generateRandomArray();
+                const result = testVisualizationController.startSorting('bubble');
+                
+                showResult('visualizationControllerResult', result, 
+                    `VisualizationController testado com sucesso! ${testVisualizationController.steps.length} steps gerados.`);
+                    
+            } catch (error) {
+                showResult('visualizationControllerResult', false, `Erro no VisualizationController: ${error.message}`);
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = function() {
+            console.log('🔧 Debug Test carregado!');
+            console.log('SortingAlgorithms disponível:', typeof SortingAlgorithms !== 'undefined');
+        };
+    </script>
+</body>
+</html>
