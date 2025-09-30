@@ -5,7 +5,9 @@ Uma aplicação web interativa e educativa que demonstra algoritmos de ordenaç�
 ![Preview](https://img.shields.io/badge/Status-Ready-success) ![License](https://img.shields.io/badge/License-MIT-blue) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 
 ## 🚀 **Demo Online**
-**🌐 [Acesse a Aplicação](https://algoritmos-ordenacao.vercel.app)**
+**🌐 [Acesse a Aplicação](https://algoritimos-avancados.vercel.app)**
+
+**📂 [Repositório GitHub](https://github.com/cordeirotelecom/algoritimos_avancados)**
 
 ## ✨ **Melhorias Recentes (v2.0)**
 - ✅ **Modo de Comparação Funcional** - Compare algoritmos lado a lado
