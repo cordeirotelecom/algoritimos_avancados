@@ -248,7 +248,58 @@ Contribuições são bem-vindas! Para contribuir:
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-## 📝 Licença
+## � **Melhorias Avançadas Implementadas (v2.5)**
+
+### 🎵 **Sistema de Áudio Inteligente**
+- **Presets por Algoritmo** - Cada algoritmo tem sua assinatura sonora única
+- **Controle Granular** - Volume independente para diferentes tipos de sons  
+- **Persistência de Configurações** - Preferências salvas automaticamente
+- **Atalhos de Teclado** - Ctrl+M para alternar som rapidamente
+
+### 📊 **Monitor de Performance Avançado**
+- **Métricas em Tempo Real** - FPS, uso de memória e tempos de execução
+- **Análise de Eficiência** - Comparação teórica vs prática dos algoritmos
+- **Relatórios Detalhados** - Exportação completa de dados de performance
+- **Detecção de Long Tasks** - Identificação automática de operações pesadas
+
+### ♿ **Sistema de Acessibilidade Total**
+- **Navegação por Teclado** - Alt+H (contraste), Alt+L (texto), Alt+M (movimento)
+- **Suporte a Leitores de Tela** - ARIA labels e anúncios contextuais completos
+- **Detecção Automática** - Respeita preferências do sistema operacional
+- **Modo Alto Contraste** - Ativação instantânea para melhor visibilidade
+
+### 🛠️ **Dados Personalizados Aprimorados**
+- **Múltiplos Formatos** - Suporte nativo a números, palavras e frases
+- **Exemplos Educativos** - 20+ datasets pré-configurados para aprendizado
+- **Validação Inteligente** - Verificação automática de formato e duplicatas
+- **Preview Dinâmico** - Visualização em tempo real dos dados inseridos
+
+### 🎨 **Animações e Visual Avançado**
+- **Estados Visuais Específicos** - Cores e animações para cada operação
+- **Micro-interações** - Feedback visual para todas as ações do usuário
+- **Responsividade Total** - Otimização para todos os tamanhos de tela
+- **Modo Dark/Light** - Detecção automática de preferência do sistema
+
+### 📈 **Sistema de Analytics**
+- **Histórico Detalhado** - Tracking completo de todas as ações
+- **Comparação de Sessões** - Análise de melhoria ao longo do tempo
+- **Métricas de Engajamento** - Tempo de uso, algoritmos favoritos, etc.
+- **Export de Dados** - Relatórios completos em JSON para análise
+
+## 🎯 **Atalhos de Teclado**
+
+| Atalho | Função |
+|--------|--------|
+| **Ctrl+M** | Alternar som |
+| **Alt+H** | Alto contraste |
+| **Alt+L** | Texto grande |
+| **Alt+M** | Movimento reduzido |
+| **Ctrl+Shift+P** | Relatório de performance |
+| **Espaço** | Pausar/Continuar |
+| **R** | Reiniciar |
+| **1-7** | Selecionar algoritmo |
+
+## �📝 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
 
@@ -256,6 +307,14 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para de
 
 Desenvolvido com ❤️ para tornar o aprendizado de algoritmos mais divertido e interativo.
 
+### 🏆 **Recursos Técnicos Implementados**
+- **Web Audio API** - Sistema de som nativo do navegador
+- **Canvas API** - Gráficos de performance em tempo real  
+- **Local Storage** - Persistência completa de dados e configurações
+- **Performance API** - Monitoramento detalhado de recursos
+- **Accessibility APIs** - Suporte completo a tecnologias assistivas
+- **Responsive Design** - CSS Grid e Flexbox para layouts adaptativos
+
 ---
 
-**Divirta-se aprendendo algoritmos de ordenação! 🎉**
+**🎉 Divirta-se aprendendo algoritmos de ordenação de forma interativa e acessível!**

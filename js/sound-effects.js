@@ -3,31 +3,83 @@
 class SoundEffectsController {
     constructor() {
         this.audioContext = null;
-        this.enabled = true;
-        this.volume = 0.3;
+        this.enabled = this.loadSoundSettings();
+        this.volume = this.loadVolumeSettings();
+        this.masterVolume = 1.0;
+        this.soundQueue = [];
+        this.isPlaying = false;
+        this.presets = this.initializePresets();
         this.initializeAudio();
     }
 
     async initializeAudio() {
         try {
+            // Check for Web Audio API support
+            if (!window.AudioContext && !window.webkitAudioContext) {
+                throw new Error('Web Audio API não suportado');
+            }
+            
             // Initialize Web Audio API
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
             
+            // Create master gain node for global volume control
+            this.masterGainNode = this.audioContext.createGain();
+            this.masterGainNode.connect(this.audioContext.destination);
+            this.masterGainNode.gain.setValueAtTime(this.masterVolume, this.audioContext.currentTime);
+            
             // Resume audio context on user interaction (required by browsers)
-            document.addEventListener('click', () => {
+            const resumeAudio = () => {
                 if (this.audioContext && this.audioContext.state === 'suspended') {
-                    this.audioContext.resume();
+                    this.audioContext.resume().then(() => {
+                        console.log('🔊 Audio context resumed');
+                    });
                 }
-            }, { once: true });
+            };
+            
+            document.addEventListener('click', resumeAudio, { once: true });
+            document.addEventListener('keydown', resumeAudio, { once: true });
+            
+            console.log('🎵 Sound system initialized successfully');
             
         } catch (error) {
-            console.warn('Web Audio API not supported:', error);
+            console.warn('⚠️ Web Audio API not supported:', error.message);
             this.enabled = false;
         }
     }
 
+    // Load sound settings from localStorage
+    loadSoundSettings() {
+        const saved = localStorage.getItem('sortingApp_soundEnabled');
+        return saved !== null ? JSON.parse(saved) : true;
+    }
+    
+    // Load volume settings from localStorage
+    loadVolumeSettings() {
+        const saved = localStorage.getItem('sortingApp_volume');
+        return saved !== null ? parseFloat(saved) : 0.3;
+    }
+    
+    // Save sound settings to localStorage
+    saveSoundSettings() {
+        localStorage.setItem('sortingApp_soundEnabled', JSON.stringify(this.enabled));
+        localStorage.setItem('sortingApp_volume', this.volume.toString());
+    }
+    
+    // Initialize sound presets for different algorithms
+    initializePresets() {
+        return {
+            bubble: { baseFreq: 300, range: 200, type: 'sine' },
+            selection: { baseFreq: 400, range: 300, type: 'triangle' },
+            insertion: { baseFreq: 350, range: 250, type: 'sine' },
+            quick: { baseFreq: 500, range: 400, type: 'square' },
+            merge: { baseFreq: 450, range: 350, type: 'sawtooth' },
+            heap: { baseFreq: 600, range: 500, type: 'triangle' },
+            radix: { baseFreq: 250, range: 150, type: 'sine' }
+        };
+    }
+    
     // Generate different types of sounds using oscillators
-    playSound(type, frequency = 440, duration = 0.1) {
+    playSound(type, frequency = 440, duration = 0.1, algorithm = 'bubble') {
         if (!this.enabled || !this.audioContext) return;
 
         const oscillator = this.audioContext.createOscillator();
@@ -36,18 +88,48 @@ class SoundEffectsController {
         oscillator.connect(gainNode);
         gainNode.connect(this.audioContext.destination);
 
+        // Get algorithm-specific preset
+        const preset = this.presets[algorithm] || this.presets.bubble;
+        
         // Configure sound based on type
         switch (type) {
             case 'compare':
-                oscillator.type = 'sine';
+                oscillator.type = preset.type;
                 oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
-                gainNode.gain.setValueAtTime(this.volume * 0.3, this.audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+                gainNode.gain.setValueAtTime(this.volume * 0.2, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration * 0.8);
                 break;
 
             case 'swap':
                 oscillator.type = 'square';
-                oscillator.frequency.setValueAtTime(frequency * 1.5, this.audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(frequency * 1.3, this.audioContext.currentTime);
+                gainNode.gain.setValueAtTime(this.volume * 0.4, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+                break;
+                
+            case 'place':
+                oscillator.type = 'triangle';
+                oscillator.frequency.setValueAtTime(frequency * 0.8, this.audioContext.currentTime);
+                gainNode.gain.setValueAtTime(this.volume * 0.3, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration * 1.2);
+                break;
+                
+            case 'pivot':
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(frequency * 1.8, this.audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(frequency * 0.9, this.audioContext.currentTime + duration);
+                gainNode.gain.setValueAtTime(this.volume * 0.5, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+                break;
+                
+            case 'merge':
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+                oscillator.frequency.linearRampToValueAtTime(frequency * 1.2, this.audioContext.currentTime + duration/2);
+                oscillator.frequency.linearRampToValueAtTime(frequency, this.audioContext.currentTime + duration);
+                gainNode.gain.setValueAtTime(this.volume * 0.35, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+                break;
                 oscillator.frequency.exponentialRampToValueAtTime(frequency * 0.8, this.audioContext.currentTime + duration);
                 gainNode.gain.setValueAtTime(this.volume * 0.5, this.audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
@@ -80,9 +162,26 @@ class SoundEffectsController {
                 gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.05);
                 duration = 0.05;
                 break;
+                
+            case 'complete':
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(frequency * 1.1, this.audioContext.currentTime + duration/2);
+                oscillator.frequency.exponentialRampToValueAtTime(frequency, this.audioContext.currentTime + duration);
+                gainNode.gain.setValueAtTime(this.volume * 0.6, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+                break;
+                
+            case 'error':
+                oscillator.type = 'square';
+                oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(frequency * 0.7, this.audioContext.currentTime + duration);
+                gainNode.gain.setValueAtTime(this.volume * 0.4, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+                break;
 
             default:
-                oscillator.type = 'sine';
+                oscillator.type = preset.type;
                 oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
                 gainNode.gain.setValueAtTime(this.volume * 0.3, this.audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
