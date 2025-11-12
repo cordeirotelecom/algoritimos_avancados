@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmo de Dijkstra - Simulador Interativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f8f9fa;
+            color: #212529;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: headerShimmer 8s infinite;
+        }
+
+        @keyframes headerShimmer {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-30%, -30%); }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-bottom: 0.5rem;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .info-section h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .info-card {
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+
+        .info-card h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-card p {
+            color: #495057;
+            font-size: 0.95rem;
+        }
+
+        .info-card.complexity {
+            background: #e3f2fd;
+            border-color: #90caf9;
+        }
+
+        .info-card.restriction {
+            background: #e8f5e9;
+            border-color: #a5d6a7;
+        }
+
+        .info-card.structure {
+            background: #fff3e0;
+            border-color: #ffcc80;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .card-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .graph-container {
+            background: #fafafa;
+            border-radius: 6px;
+            padding: 2rem;
+            min-height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        svg {
+            width: 100%;
+            height: 450px;
+        }
+
+        .node {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .node circle {
+            stroke-width: 2;
+            transition: all 0.3s;
+        }
+
+        .node.unvisited circle {
+            fill: #e9ecef;
+            stroke: #adb5bd;
+        }
+
+        .node.visited circle {
+            fill: #dc3545;
+            stroke: #bd2130;
+        }
+
+        .node.current circle {
+            fill: #ff9800;
+            stroke: #e68900;
+            stroke-width: 3;
+            filter: drop-shadow(0 0 6px rgba(255, 152, 0, 0.5));
+        }
+
+        .node.origin circle {
+            fill: #28a745;
+            stroke: #218838;
+        }
+
+        .node text {
+            fill: #495057;
+            font-size: 18px;
+            font-weight: 600;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            pointer-events: none;
+        }
+
+        .node.visited text,
+        .node.current text,
+        .node.origin text {
+            fill: white;
+        }
+
+        .edge {
+            stroke: #dee2e6;
+            stroke-width: 2;
+            transition: all 0.3s;
+        }
+
+        .edge.active {
+            stroke: #28a745;
+            stroke-width: 3;
+        }
+
+        .edge-weight {
+            font-size: 13px;
+            font-weight: 600;
+            fill: #495057;
+        }
+
+        .edge-weight-bg {
+            fill: white;
+        }
+
+        .legend {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            margin-top: 1rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid;
+        }
+
+        .legend-dot.unvisited {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .legend-dot.visited {
+            background: #dc3545;
+            border-color: #bd2130;
+        }
+
+        .legend-dot.current {
+            background: #ff9800;
+            border-color: #e68900;
+        }
+
+        .legend-dot.origin {
+            background: #28a745;
+            border-color: #218838;
+        }
+
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: white;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #b71c1c;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #8b1414;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(183, 28, 28, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #545b62;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #6c757d;
+            border: 1px solid #ced4da;
+        }
+
+        .btn-outline:hover:not(:disabled) {
+            background: #f8f9fa;
+        }
+
+        .step-display {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 1.2rem;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
+        }
+
+        .step-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1976d2;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            color: #495057;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #b71c1c;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.3rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead {
+            background: #f8f9fa;
+            position: sticky;
+            top: 0;
+        }
+
+        th {
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            font-size: 0.85rem;
+        }
+
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        tbody tr.current-row {
+            background: #fff3cd;
+        }
+
+        tbody tr.visited-row {
+            background: #f8d7da;
+        }
+
+        .table-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+        }
+
+        .calculation-table {
+            font-size: 0.85rem;
+        }
+
+        .calculation-table td {
+            padding: 0.6rem 0.75rem;
+        }
+
+        .calc-updated {
+            background: #d4edda;
+        }
+
+        .calc-not-updated {
+            background: #fff;
+        }
+
+        .old-value {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+
+        .new-value {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .code-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .code-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            background: #f8f9fa;
+        }
+
+        .code-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .code-body {
+            padding: 0;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1.5rem;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        .path-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .path-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 1rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            transition: all 0.3s;
+        }
+
+        .path-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .path-route {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .path-distance {
+            color: #b71c1c;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 6px rgba(255, 152, 0, 0.5));
+            }
+            50% { 
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 12px rgba(255, 152, 0, 0.8));
+            }
+        }
+
+        .node.current {
+            animation: pulse 1.5s infinite;
+        }
+
+        .footer {
+            background: white;
+            border-top: 1px solid #e9ecef;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            color: #6c757d;
+        }
+
+        .footer a {
+            color: #b71c1c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .distance-label {
+            font-size: 12px;
+            fill: #495057;
+            font-weight: 600;
+        }
+
+        .predecessor-label {
+            font-size: 11px;
+            fill: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="index.html" class="back-link">← Voltar</a>
+            <h1>Algoritmo de Dijkstra</h1>
+            <p class="subtitle">Caminho mais curto em grafos ponderados</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Informações sobre o algoritmo -->
+        <div class="info-section">
+            <h2>O que é Dijkstra?</h2>
+            <div style="margin-bottom: 1rem;">
+                <p style="color: #495057;"><strong>Definição:</strong> O algoritmo de Dijkstra encontra o caminho mais curto entre um vértice inicial e todos os outros vértices em um grafo ponderado com pesos não-negativos.</p>
+            </div>
+            <div class="info-grid">
+                <div class="info-card complexity">
+                    <h3>Complexidade</h3>
+                    <p>O((V + E) log V) com heap</p>
+                </div>
+                <div class="info-card restriction">
+                    <h3>Restrições</h3>
+                    <p>Pesos não-negativos</p>
+                </div>
+                <div class="info-card structure">
+                    <h3>Estrutura</h3>
+                    <p>Fila de prioridade</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="main-content">
+            <!-- Visualização do grafo -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Grafo Ponderado de Exemplo</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="graph-container">
+                            <svg id="graphSvg" viewBox="0 0 700 450"></svg>
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-dot unvisited"></div>
+                                <span>Não visitado</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot visited"></div>
+                                <span>Visitado</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot current"></div>
+                                <span>Atual</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles e informações -->
+            <div class="controls-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Controles</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="step-display">
+                            <div class="step-number">Passo: <span id="stepCounter">0</span> / <span id="totalSteps">13</span></div>
+                            <div class="step-description" id="stepDesc">Selecione um vértice de origem e clique em Executar</div>
+                        </div>
+
+                        <div class="control-group" style="margin-top: 1.5rem;">
+                            <label class="control-label">Vértice de Origem:</label>
+                            <select id="startVertex">
+                                <option value="">Selecione um vértice</option>
+                                <option value="A">Vértice A</option>
+                                <option value="B">Vértice B</option>
+                                <option value="C">Vértice C</option>
+                                <option value="D">Vértice D</option>
+                                <option value="E">Vértice E</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" id="executeBtn">▶ Executar</button>
+                        <button class="btn btn-secondary" id="nextStepBtn" disabled>→ Próximo Passo</button>
+                        <button class="btn btn-success" id="executeAllBtn" disabled>⚡ Executar Tudo</button>
+                        <button class="btn btn-outline" id="resetBtn">🔄 Resetar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Estatísticas</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value" id="visitedCount">0</div>
+                                <div class="stat-label">Visitados</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" id="remainingCount">5</div>
+                                <div class="stat-label">Restantes</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Tabela de Distâncias</h2>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Vértice</th>
+                                        <th>Distância</th>
+                                        <th>Predecessor</th>
+                                        <th>Caminho</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="distanceTable">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: #6c757d;">
+                                            Aguardando execução...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Histórico de cálculos -->
+        <div class="card">
+            <div class="card-header">
+                <h2>📊 Histórico Detalhado de Cálculos</h2>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                <div class="table-wrapper" style="max-height: 500px;">
+                    <table class="calculation-table">
+                        <thead>
+                            <tr>
+                                <th>Passo</th>
+                                <th>Vértice Atual</th>
+                                <th>Analisando</th>
+                                <th>Dist. Anterior</th>
+                                <th>Cálculo</th>
+                                <th>Nova Dist.</th>
+                                <th>Atualizado?</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calculationHistory">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: #6c757d;">
+                                    Nenhum cálculo realizado ainda...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Caminhos encontrados -->
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <h2>🎯 Caminhos Mais Curtos Encontrados</h2>
+            </div>
+            <div class="card-body">
+                <div class="path-list" id="pathsList">
+                    <p style="text-align: center; color: #6c757d;">Execute o algoritmo para visualizar os caminhos...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Código -->
+        <div class="code-section">
+            <div class="code-header">
+                <h2>Código: Dijkstra</h2>
+            </div>
+            <div class="code-body">
+                <pre><code>// Algoritmo de Dijkstra
+// Complexidade: O((V + E) log V) com heap
+// Usa: Encontrar caminho mais curto em grafos ponderados com pesos positivos
+
+class GrafoComPeso {
+    constructor() {
+        this.adjacencia = {};
+    }
+    
+    adicionarVertice(vertice) {
+        if (!this.adjacencia[vertice]) {
+            this.adjacencia[vertice] = [];
+        }
+    }
+    
+    adicionarAresta(v1, v2, peso) {
+        this.adjacencia[v1].push({ vertice: v2, peso });
+        this.adjacencia[v2].push({ vertice: v1, peso });
+    }
+    
+    dijkstra(origem) {
+        const distancias = {};
+        const predecessores = {};
+        const visitados = new Set();
+        const vertices = Object.keys(this.adjacencia);
+        
+        // Inicializar distâncias
+        vertices.forEach(v => {
+            distancias[v] = Infinity;
+            predecessores[v] = null;
+        });
+        distancias[origem] = 0;
+        
+        // Processar vértices
+        while (visitados.size < vertices.length) {
+            // Encontrar vértice não visitado com menor distância
+            let menorDistancia = Infinity;
+            let verticeAtual = null;
+            
+            vertices.forEach(v => {
+                if (!visitados.has(v) && distancias[v] < menorDistancia) {
+                    menorDistancia = distancias[v];
+                    verticeAtual = v;
+                }
+            });
+            
+            if (verticeAtual === null) break;
+            
+            visitados.add(verticeAtual);
+            
+            // Atualizar distâncias dos vizinhos
+            this.adjacencia[verticeAtual].forEach(({ vertice, peso }) => {
+                if (!visitados.has(vertice)) {
+                    const novaDistancia = distancias[verticeAtual] + peso;
+                    
+                    if (novaDistancia < distancias[vertice]) {
+                        distancias[vertice] = novaDistancia;
+                        predecessores[vertice] = verticeAtual;
+                    }
+                }
+            });
+        }
+        
+        return { distancias, predecessores };
+    }
+    
+    reconstruirCaminho(predecessores, destino) {
+        const caminho = [];
+        let atual = destino;
+        
+        while (atual !== null) {
+            caminho.unshift(atual);
+            atual = predecessores[atual];
+        }
+        
+        return caminho;
+    }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Desenvolvido com ❤️ para ensino de algoritmos</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="https://github.com/cordeirotelecom" target="_blank">GitHub: @cordeirotelecom</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Definição do grafo
+        const grafo = {
+            nodes: [
+                { id: 'A', x: 350, y: 80 },
+                { id: 'B', x: 180, y: 200 },
+                { id: 'C', x: 350, y: 230 },
+                { id: 'D', x: 520, y: 200 },
+                { id: 'E', x: 350, y: 370 }
+            ],
+            edges: [
+                { from: 'A', to: 'B', weight: 4 },
+                { from: 'A', to: 'C', weight: 2 },
+                { from: 'B', to: 'C', weight: 1 },
+                { from: 'C', to: 'D', weight: 8 },
+                { from: 'C', to: 'E', weight: 10 },
+                { from: 'D', to: 'E', weight: 2 },
+                { from: 'B', to: 'E', weight: 3 }
+            ]
+        };
+
+        // Estado da execução
+        let state = {
+            distances: {},
+            predecessors: {},
+            visited: new Set(),
+            current: null,
+            origin: null,
+            step: 0,
+            totalSteps: 0,
+            history: [],
+            isRunning: false
+        };
+
+        // Inicializar
+        function init() {
+            grafo.nodes.forEach(node => {
+                state.distances[node.id] = Infinity;
+                state.predecessors[node.id] = null;
+            });
+            drawGraph();
+        }
+
+        // Desenhar grafo
+        function drawGraph() {
+            const svg = document.getElementById('graphSvg');
+            svg.innerHTML = '';
+
+            // Desenhar arestas
+            grafo.edges.forEach(edge => {
+                const from = grafo.nodes.find(n => n.id === edge.from);
+                const to = grafo.nodes.find(n => n.id === edge.to);
+
+                const isActive = (state.predecessors[edge.to] === edge.from || 
+                                 state.predecessors[edge.from] === edge.to);
+
+                // Linha
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', from.x);
+                line.setAttribute('y1', from.y);
+                line.setAttribute('x2', to.x);
+                line.setAttribute('y2', to.y);
+                line.setAttribute('class', isActive ? 'edge active' : 'edge');
+                svg.appendChild(line);
+
+                // Peso
+                const mx = (from.x + to.x) / 2;
+                const my = (from.y + to.y) / 2;
+
+                const bgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                bgCircle.setAttribute('cx', mx);
+                bgCircle.setAttribute('cy', my);
+                bgCircle.setAttribute('r', 14);
+                bgCircle.setAttribute('class', 'edge-weight-bg');
+                svg.appendChild(bgCircle);
+
+                const weightText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                weightText.setAttribute('x', mx);
+                weightText.setAttribute('y', my);
+                weightText.setAttribute('class', 'edge-weight');
+                weightText.setAttribute('text-anchor', 'middle');
+                weightText.setAttribute('dominant-baseline', 'middle');
+                weightText.textContent = edge.weight;
+                svg.appendChild(weightText);
+            });
+
+            // Desenhar nós
+            grafo.nodes.forEach(node => {
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                
+                let nodeClass = 'unvisited';
+                if (node.id === state.current) nodeClass = 'current';
+                else if (state.visited.has(node.id)) nodeClass = 'visited';
+                if (node.id === state.origin && !state.visited.has(node.id)) nodeClass = 'origin';
+                
+                g.setAttribute('class', `node ${nodeClass}`);
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', node.x);
+                circle.setAttribute('cy', node.y);
+                circle.setAttribute('r', 30);
+                g.appendChild(circle);
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', node.x);
+                text.setAttribute('y', node.y);
+                text.textContent = node.id;
+                g.appendChild(text);
+
+                // Distância
+                if (state.distances[node.id] !== Infinity) {
+                    const distText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    distText.setAttribute('x', node.x);
+                    distText.setAttribute('y', node.y + 45);
+                    distText.setAttribute('class', 'distance-label');
+                    distText.setAttribute('text-anchor', 'middle');
+                    distText.textContent = `d=${state.distances[node.id]}`;
+                    g.appendChild(distText);
+                }
+
+                // Predecessor
+                if (state.predecessors[node.id]) {
+                    const predText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    predText.setAttribute('x', node.x);
+                    predText.setAttribute('y', node.y + 58);
+                    predText.setAttribute('class', 'predecessor-label');
+                    predText.setAttribute('text-anchor', 'middle');
+                    predText.textContent = `← ${state.predecessors[node.id]}`;
+                    g.appendChild(predText);
+                }
+
+                svg.appendChild(g);
+            });
+        }
+
+        // Atualizar UI
+        function updateUI() {
+            document.getElementById('stepCounter').textContent = state.step;
+            document.getElementById('visitedCount').textContent = state.visited.size;
+            document.getElementById('remainingCount').textContent = grafo.nodes.length - state.visited.size;
+
+            // Tabela de distâncias
+            const tbody = document.getElementById('distanceTable');
+            tbody.innerHTML = '';
+
+            grafo.nodes.forEach(node => {
+                const row = document.createElement('tr');
+                if (node.id === state.current) row.classList.add('current-row');
+                else if (state.visited.has(node.id)) row.classList.add('visited-row');
+
+                const path = getPath(node.id);
+                const pathStr = path.length > 1 ? path.join(' → ') : '-';
+
+                row.innerHTML = `
+                    <td><strong>${node.id}</strong></td>
+                    <td>${state.distances[node.id] === Infinity ? '∞' : state.distances[node.id]}</td>
+                    <td>${state.predecessors[node.id] || '-'}</td>
+                    <td style="font-size: 0.85rem;">${pathStr}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Histórico
+            updateHistory();
+
+            // Caminhos
+            updatePaths();
+
+            drawGraph();
+        }
+
+        // Atualizar histórico
+        function updateHistory() {
+            const tbody = document.getElementById('calculationHistory');
+            tbody.innerHTML = '';
+
+            if (state.history.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #6c757d;">Nenhum cálculo realizado ainda...</td></tr>';
+                return;
+            }
+
+            state.history.forEach(calc => {
+                const row = document.createElement('tr');
+                row.className = calc.updated ? 'calc-updated' : 'calc-not-updated';
+
+                const oldDist = calc.oldDistance === Infinity ? '∞' : calc.oldDistance;
+                const newDist = calc.newDistance === Infinity ? '∞' : calc.newDistance;
+
+                row.innerHTML = `
+                    <td><strong>${calc.step}</strong></td>
+                    <td style="color: #ff9800; font-weight: 600;">${calc.current}</td>
+                    <td><strong>${calc.neighbor}</strong></td>
+                    <td>${calc.updated ? `<span class="old-value">${oldDist}</span>` : oldDist}</td>
+                    <td style="font-family: monospace; color: #1976d2;">${calc.calculation}</td>
+                    <td class="${calc.updated ? 'new-value' : ''}">${newDist}</td>
+                    <td><strong>${calc.updated ? '✅ SIM' : '❌ NÃO'}</strong></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Scroll to bottom
+            const wrapper = tbody.closest('.table-wrapper');
+            if (wrapper) wrapper.scrollTop = wrapper.scrollHeight;
+        }
+
+        // Atualizar caminhos
+        function updatePaths() {
+            const container = document.getElementById('pathsList');
+            
+            if (!state.origin || state.visited.size === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6c757d;">Execute o algoritmo para visualizar os caminhos...</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+
+            grafo.nodes.forEach(node => {
+                if (node.id === state.origin) return;
+
+                const path = getPath(node.id);
+                const dist = state.distances[node.id];
+
+                if (dist !== Infinity && path.length > 1) {
+                    const div = document.createElement('div');
+                    div.className = 'path-item';
+                    div.innerHTML = `
+                        <span class="path-route">${path.join(' → ')}</span>
+                        <span class="path-distance">dist: ${dist}</span>
+                    `;
+                    container.appendChild(div);
+                }
+            });
+
+            if (container.children.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6c757d;">Nenhum caminho completo ainda...</p>';
+            }
+        }
+
+        // Obter caminho
+        function getPath(nodeId) {
+            const path = [];
+            let current = nodeId;
+
+            while (current !== null) {
+                path.unshift(current);
+                current = state.predecessors[current];
+            }
+
+            return path.length > 0 && path[0] === state.origin ? path : [];
+        }
+
+        // Resetar
+        function reset() {
+            state.distances = {};
+            state.predecessors = {};
+            state.visited = new Set();
+            state.current = null;
+            state.origin = null;
+            state.step = 0;
+            state.totalSteps = 0;
+            state.history = [];
+            state.isRunning = false;
+
+            grafo.nodes.forEach(node => {
+                state.distances[node.id] = Infinity;
+                state.predecessors[node.id] = null;
+            });
+
+            document.getElementById('stepDesc').textContent = 'Selecione um vértice de origem e clique em Executar';
+            document.getElementById('nextStepBtn').disabled = true;
+            document.getElementById('executeAllBtn').disabled = true;
+            document.getElementById('calculationHistory').innerHTML = '<tr><td colspan="7" style="text-align: center; color: #6c757d;">Nenhum cálculo realizado ainda...</td></tr>';
+
+            updateUI();
+        }
+
+        // Inicializar execução
+        function startExecution(startVertex) {
+            reset();
+            state.origin = startVertex;
+            state.distances[startVertex] = 0;
+            state.totalSteps = grafo.nodes.length;
+
+            document.getElementById('stepDesc').textContent = `Iniciado a partir de ${startVertex} com distância 0`;
+            document.getElementById('nextStepBtn').disabled = false;
+            document.getElementById('executeAllBtn').disabled = false;
+
+            updateUI();
+        }
+
+        // Obter próximo nó
+        function getMinNode() {
+            let min = null;
+            let minDist = Infinity;
+
+            grafo.nodes.forEach(node => {
+                if (!state.visited.has(node.id) && state.distances[node.id] < minDist) {
+                    minDist = state.distances[node.id];
+                    min = node.id;
+                }
+            });
+
+            return min;
+        }
+
+        // Obter vizinhos
+        function getNeighbors(nodeId) {
+            const neighbors = [];
+            grafo.edges.forEach(edge => {
+                if (edge.from === nodeId) {
+                    neighbors.push({ id: edge.to, weight: edge.weight });
+                } else if (edge.to === nodeId) {
+                    neighbors.push({ id: edge.from, weight: edge.weight });
+                }
+            });
+            return neighbors;
+        }
+
+        // Executar próximo passo
+        function executeStep() {
+            const nextNode = getMinNode();
+            
+            if (!nextNode) {
+                document.getElementById('stepDesc').innerHTML = `<strong>✅ Concluído!</strong> Todos os caminhos mais curtos de <strong>${state.origin}</strong> foram encontrados.`;
+                document.getElementById('nextStepBtn').disabled = true;
+                document.getElementById('executeAllBtn').disabled = true;
+                state.current = null;
+                updateUI();
+                return false;
+            }
+
+            state.current = nextNode;
+            state.visited.add(nextNode);
+            state.step++;
+
+            const neighbors = getNeighbors(nextNode);
+            const updated = [];
+
+            neighbors.forEach(({ id, weight }) => {
+                if (!state.visited.has(id)) {
+                    const oldDist = state.distances[id];
+                    const newDist = state.distances[nextNode] + weight;
+                    const wasUpdated = newDist < oldDist;
+
+                    state.history.push({
+                        step: state.step,
+                        current: nextNode,
+                        neighbor: id,
+                        oldDistance: oldDist,
+                        calculation: `${state.distances[nextNode]} + ${weight} = ${newDist}`,
+                        newDistance: newDist,
+                        updated: wasUpdated
+                    });
+
+                    if (wasUpdated) {
+                        state.distances[id] = newDist;
+                        state.predecessors[id] = nextNode;
+                        updated.push(id);
+                    }
+                }
+            });
+
+            let desc = `<strong>Passo ${state.step}:</strong> Processando vértice <strong>${nextNode}</strong> (distância: ${state.distances[nextNode]})`;
+            if (updated.length > 0) {
+                desc += `<br>✅ Atualizados: <strong>${updated.join(', ')}</strong>`;
+            } else {
+                desc += `<br>⚪ Nenhuma melhoria encontrada`;
+            }
+            document.getElementById('stepDesc').innerHTML = desc;
+
+            updateUI();
+            return true;
+        }
+
+        // Executar tudo
+        async function executeAll() {
+            if (state.isRunning) return;
+            state.isRunning = true;
+
+            document.getElementById('executeBtn').disabled = true;
+            document.getElementById('nextStepBtn').disabled = true;
+            document.getElementById('executeAllBtn').disabled = true;
+
+            while (executeStep()) {
+                await new Promise(resolve => setTimeout(resolve, 800));
+            }
+
+            state.isRunning = false;
+            document.getElementById('executeBtn').disabled = false;
+        }
+
+        // Event listeners
+        document.getElementById('executeBtn').addEventListener('click', () => {
+            const startVertex = document.getElementById('startVertex').value;
+            if (!startVertex) {
+                alert('Por favor, selecione um vértice de origem!');
+                return;
+            }
+            startExecution(startVertex);
+        });
+
+        document.getElementById('nextStepBtn').addEventListener('click', () => {
+            executeStep();
+        });
+
+        document.getElementById('executeAllBtn').addEventListener('click', () => {
+            executeAll();
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            reset();
+        });
+
+        // Inicializar
+        init();
+    </script>
+</body>
+</html>
