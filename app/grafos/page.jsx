@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Navigation from '../components/Navigation';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -139,22 +140,11 @@ export default function GrafosPage() {
 
   return (
     <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+      {/* Navigation */}
+      <Navigation />
+      
       {/* Header */}
       <div style={{ marginBottom: '30px' }}>
-        <Link href="/">
-          <button
-            style={{
-              padding: '8px 16px',
-              marginBottom: '20px',
-              backgroundColor: '#f0f0f0',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
-          >
-            ← Voltar
-          </button>
-        </Link>
         <h1 style={{ marginTop: 0 }}>Introdução a Grafos</h1>
         <p style={{ fontSize: '16px', color: '#666' }}>
           Aprenda sobre estruturas de grafos, tipos, algoritmos e aplicações práticas.

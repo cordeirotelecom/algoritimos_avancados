@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Navigation from '../components/Navigation';
 import '../styles/dijkstra.css';
 
 // Force dynamic rendering
@@ -167,6 +168,10 @@ export default function DijkstraPage() {
 
   return (
     <div className="dijkstra-container">
+      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 1rem' }}>
+        <Navigation />
+      </div>
+      
       <header className="dijkstra-header">
         <h1>🎓 Simulador: Dijkstra</h1>
         <p>Visualize o algoritmo passo a passo</p>

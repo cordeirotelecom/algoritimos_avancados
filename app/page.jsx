@@ -8,6 +8,13 @@ export const dynamic = 'force-dynamic';
 export default function Home() {
   const modules = [
     {
+      title: 'Algoritmos de Ordenação',
+      icon: '🫧',
+      description: 'Visualize 7 algoritmos de ordenação passo a passo com animações',
+      href: '/ordenacao',
+      color: '#9333ea',
+    },
+    {
       title: 'Simulador Dijkstra',
       icon: '⚡',
       description: 'Visualize o algoritmo de caminho mais curto passo a passo',
