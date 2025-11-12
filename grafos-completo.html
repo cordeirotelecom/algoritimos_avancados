@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teoria dos Grafos - Algoritmo de Dijkstra</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --light: #f1f5f9;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-attachment: fixed;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        /* Section */
+        .section {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .section:nth-child(even) {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .card p {
+            color: var(--gray);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Dijkstra Step */
+        .dijkstra-step {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--primary);
+        }
+
+        .dijkstra-step h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+
+        /* Graph Visualization */
+        .graph-container {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            border: 3px solid var(--primary);
+            position: relative;
+        }
+
+        .graph-visual {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            line-height: 2.5;
+            text-align: center;
+            color: var(--dark);
+        }
+
+        .node {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            line-height: 60px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin: 0.5rem;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .node.visited {
+            background: linear-gradient(135deg, var(--success), #059669);
+        }
+
+        .node.current {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 15px 40px rgba(245, 158, 11, 0.5);
+            }
+        }
+
+        .edge {
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        /* Table */
+        .table-container {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        th {
+            padding: 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        td {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tbody tr {
+            transition: all 0.3s;
+        }
+
+        tbody tr:hover {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.05), transparent);
+        }
+
+        .highlight {
+            background: rgba(99, 102, 241, 0.1);
+            font-weight: 600;
+        }
+
+        /* Code Block */
+        .code-container {
+            background: var(--dark);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .code-dot:nth-child(1) { background: #ff5f56; }
+        .code-dot:nth-child(2) { background: #ffbd2e; }
+        .code-dot:nth-child(3) { background: #27c93f; }
+
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #a9b7c6;
+        }
+
+        .code-block .keyword { color: #cc7832; }
+        .code-block .function { color: #ffc66d; }
+        .code-block .string { color: #6a8759; }
+        .code-block .comment { color: #808080; font-style: italic; }
+        .code-block .number { color: #6897bb; }
+        .code-block .variable { color: #9876aa; }
+
+        /* Complexity Badge */
+        .complexity {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .complexity.time {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .complexity.space {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border-left: 5px solid var(--primary);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .info-box h4 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box p {
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+            border-left: 5px solid var(--warning);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .warning-box h4 {
+            color: var(--warning);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .graph-visual {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>🗺️ Algoritmo de Dijkstra</h1>
+            <p>O Caminho Mais Curto em Grafos Ponderados</p>
+        </div>
+    </section>
+
+    <!-- Introdução -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">O que é o Algoritmo de Dijkstra?</h2>
+            <p class="section-subtitle">
+                Descoberto por Edsger Dijkstra em 1956, é um dos algoritmos mais importantes para encontrar 
+                o caminho mais curto entre vértices em um grafo ponderado
+            </p>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <span class="card-icon">🎯</span>
+                    <h3>Objetivo</h3>
+                    <p>
+                        Encontrar o caminho de menor custo (menor peso total) de um vértice origem para todos os 
+                        outros vértices do grafo.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">⚙️</span>
+                    <h3>Funcionamento</h3>
+                    <p>
+                        Utiliza uma estratégia gulosa (greedy), sempre escolhendo o próximo vértice com menor 
+                        distância conhecida não visitado.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📊</span>
+                    <h3>Complexidade</h3>
+                    <p>
+                        <span class="complexity time">Tempo: O((V + E) log V)</span>
+                        <span class="complexity space">Espaço: O(V)</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>💡 Importante</h4>
+                <p>
+                    O algoritmo de Dijkstra funciona apenas com <strong>pesos não-negativos</strong> nas arestas. 
+                    Para grafos com pesos negativos, use o algoritmo de Bellman-Ford.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exemplo Passo a Passo -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Exemplo Didático: Passo a Passo</h2>
+            <p class="section-subtitle">
+                Vamos encontrar o caminho mais curto de A até todos os outros vértices
+            </p>
+
+            <!-- Grafo Inicial -->
+            <div class="graph-container">
+                <h3 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">
+                    📍 Grafo Original com Pesos
+                </h3>
+                <div class="graph-visual">
+                    <pre>
+        <span class="node">A</span> ──────7────── <span class="node">B</span> ──────10────── <span class="node">D</span>
+         │                      │                      │
+         │                      │                      │
+         9                     15                     2
+         │                      │                      │
+         │                      │                      │
+        <span class="node">C</span> ──────11───── <span class="node">E</span> ──────6─────── <span class="node">F</span>
+                    </pre>
+                </div>
+                <p style="text-align: center; color: var(--gray); margin-top: 2rem;">
+                    <strong>Vértices:</strong> {A, B, C, D, E, F}<br>
+                    <strong>Origem:</strong> A<br>
+                    <strong>Objetivo:</strong> Encontrar menor distância de A para todos os vértices
+                </p>
+            </div>
+
+            <!-- Passo 0: Inicialização -->
+            <div class="dijkstra-step">
+                <h3><span class="step-number">0</span> Inicialização</h3>
+                <p>Configuramos as distâncias iniciais e marcamos todos os vértices como não visitados.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vértice</th>
+                                <th>Distância</th>
+                                <th>Predecessor</th>
+                                <th>Visitado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight">
+                                <td><strong>A (origem)</strong></td>
+                                <td><strong>0</strong></td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>B</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>C</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>D</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>E</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>F</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Conceito</h4>
+                    <p>
+                        A distância do vértice origem (A) para ele mesmo é 0. Todos os outros começam com distância infinita (∞) 
+                        porque ainda não conhecemos um caminho até eles.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Passo 1 -->
+            <div class="dijkstra-step">
+                <h3><span class="step-number">1</span> Processar Vértice A</h3>
+                <p>Selecionamos A (menor distância não visitada: 0) e atualizamos seus vizinhos.</p>
+                
+                <div class="graph-container">
+                    <div class="graph-visual">
+                        <pre>
+        <span class="node current">A</span> ──────7────── <span class="node">B</span> ──────10────── <span class="node">D</span>
+         │                      │                      │
+         │                      │                      │
+         9                     15                     2
+         │                      │                      │
+         │                      │                      │
+        <span class="node">C</span> ──────11───── <span class="node">E</span> ──────6─────── <span class="node">F</span>
+                        </pre>
+                    </div>
+                </div>
+
+                <p><strong>Vizinhos de A:</strong> B (peso 7) e C (peso 9)</p>
+                <ul style="margin-left: 2rem; color: var(--gray);">
+                    <li>Distância para B: 0 + 7 = <strong style="color: var(--success);">7</strong> (atualizado de ∞)</li>
+                    <li>Distância para C: 0 + 9 = <strong style="color: var(--success);">9</strong> (atualizado de ∞)</li>
+                </ul>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vértice</th>
+                                <th>Distância</th>
+                                <th>Predecessor</th>
+                                <th>Visitado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>A</strong></td>
+                                <td>0</td>
+                                <td>-</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td>B</td>
+                                <td><strong>7</strong></td>
+                                <td>A</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td>C</td>
+                                <td><strong>9</strong></td>
+                                <td>A</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>D</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>E</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>F</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Passo 2 -->
+            <div class="dijkstra-step">
+                <h3><span class="step-number">2</span> Processar Vértice B</h3>
+                <p>Selecionamos B (menor distância não visitada: 7) e atualizamos seus vizinhos.</p>
+                
+                <div class="graph-container">
+                    <div class="graph-visual">
+                        <pre>
+        <span class="node visited">A</span> ──────7────── <span class="node current">B</span> ──────10────── <span class="node">D</span>
+         │                      │                      │
+         │                      │                      │
+         9                     15                     2
+         │                      │                      │
+         │                      │                      │
+        <span class="node">C</span> ──────11───── <span class="node">E</span> ──────6─────── <span class="node">F</span>
+                        </pre>
+                    </div>
+                </div>
+
+                <p><strong>Vizinhos de B:</strong> D (peso 10) e E (peso 15)</p>
+                <ul style="margin-left: 2rem; color: var(--gray);">
+                    <li>Distância para D: 7 + 10 = <strong style="color: var(--success);">17</strong> (atualizado de ∞)</li>
+                    <li>Distância para E: 7 + 15 = <strong style="color: var(--success);">22</strong> (atualizado de ∞)</li>
+                </ul>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vértice</th>
+                                <th>Distância</th>
+                                <th>Predecessor</th>
+                                <th>Visitado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td>
+                                <td>0</td>
+                                <td>-</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>B</td>
+                                <td>7</td>
+                                <td>A</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>C</td>
+                                <td>9</td>
+                                <td>A</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td>D</td>
+                                <td><strong>17</strong></td>
+                                <td>B</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td>E</td>
+                                <td><strong>22</strong></td>
+                                <td>B</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>F</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Passo 3 -->
+            <div class="dijkstra-step">
+                <h3><span class="step-number">3</span> Processar Vértice C</h3>
+                <p>Selecionamos C (menor distância não visitada: 9) e atualizamos seus vizinhos.</p>
+                
+                <div class="graph-container">
+                    <div class="graph-visual">
+                        <pre>
+        <span class="node visited">A</span> ──────7────── <span class="node visited">B</span> ──────10────── <span class="node">D</span>
+         │                      │                      │
+         │                      │                      │
+         9                     15                     2
+         │                      │                      │
+         │                      │                      │
+        <span class="node current">C</span> ──────11───── <span class="node">E</span> ──────6─────── <span class="node">F</span>
+                        </pre>
+                    </div>
+                </div>
+
+                <p><strong>Vizinho de C:</strong> E (peso 11)</p>
+                <ul style="margin-left: 2rem; color: var(--gray);">
+                    <li>Distância para E: 9 + 11 = <strong style="color: var(--success);">20</strong> (melhor que 22! ✅)</li>
+                </ul>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vértice</th>
+                                <th>Distância</th>
+                                <th>Predecessor</th>
+                                <th>Visitado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td>
+                                <td>0</td>
+                                <td>-</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>B</td>
+                                <td>7</td>
+                                <td>A</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>C</td>
+                                <td>9</td>
+                                <td>A</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>D</td>
+                                <td>17</td>
+                                <td>B</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td>E</td>
+                                <td><strong>20</strong> ⬇️ (era 22)</td>
+                                <td>C</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>F</td>
+                                <td>∞</td>
+                                <td>-</td>
+                                <td>❌</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Relaxamento de Aresta</h4>
+                    <p>
+                        Encontramos um caminho melhor para E! O caminho A → C → E (20) é mais curto que A → B → E (22).
+                        Este processo é chamado de <strong>relaxamento</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Passo 4 -->
+            <div class="dijkstra-step">
+                <h3><span class="step-number">4</span> Processar Vértice D</h3>
+                <p>Selecionamos D (menor distância não visitada: 17) e atualizamos seus vizinhos.</p>
+                
+                <div class="graph-container">
+                    <div class="graph-visual">
+                        <pre>
+        <span class="node visited">A</span> ──────7────── <span class="node visited">B</span> ──────10────── <span class="node current">D</span>
+         │                      │                      │
+         │                      │                      │
+         9                     15                     2
+         │                      │                      │
+         │                      │                      │
+        <span class="node visited">C</span> ──────11───── <span class="node">E</span> ──────6─────── <span class="node">F</span>
+                        </pre>
+                    </div>
+                </div>
+
+                <p><strong>Vizinho de D:</strong> F (peso 2)</p>
+                <ul style="margin-left: 2rem; color: var(--gray);">
+                    <li>Distância para F: 17 + 2 = <strong style="color: var(--success);">19</strong> (atualizado de ∞)</li>
+                </ul>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vértice</th>
+                                <th>Distância</th>
+                                <th>Predecessor</th>
+                                <th>Visitado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td>
+                                <td>0</td>
+                                <td>-</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>B</td>
+                                <td>7</td>
+                                <td>A</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>C</td>
+                                <td>9</td>
+                                <td>A</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>D</td>
+                                <td>17</td>
+                                <td>B</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>E</td>
+                                <td>20</td>
+                                <td>C</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td>F</td>
+                                <td><strong>19</strong></td>
+                                <td>D</td>
+                                <td>❌</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Passo 5 -->
+            <div class="dijkstra-step">
+                <h3><span class="step-number">5</span> Processar Vértice F</h3>
+                <p>Selecionamos F (menor distância não visitada: 19) e atualizamos seus vizinhos.</p>
+                
+                <div class="graph-container">
+                    <div class="graph-visual">
+                        <pre>
+        <span class="node visited">A</span> ──────7────── <span class="node visited">B</span> ──────10────── <span class="node visited">D</span>
+         │                      │                      │
+         │                      │                      │
+         9                     15                     2
+         │                      │                      │
+         │                      │                      │
+        <span class="node visited">C</span> ──────11───── <span class="node">E</span> ──────6─────── <span class="node current">F</span>
+                        </pre>
+                    </div>
+                </div>
+
+                <p><strong>Vizinho de F:</strong> E (peso 6)</p>
+                <ul style="margin-left: 2rem; color: var(--gray);">
+                    <li>Distância para E: 19 + 6 = 25 (pior que 20, não atualiza ❌)</li>
+                </ul>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vértice</th>
+                                <th>Distância</th>
+                                <th>Predecessor</th>
+                                <th>Visitado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td>
+                                <td>0</td>
+                                <td>-</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>B</td>
+                                <td>7</td>
+                                <td>A</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>C</td>
+                                <td>9</td>
+                                <td>A</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>D</td>
+                                <td>17</td>
+                                <td>B</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>E</td>
+                                <td>20</td>
+                                <td>C</td>
+                                <td>❌</td>
+                            </tr>
+                            <tr>
+                                <td>F</td>
+                                <td>19</td>
+                                <td>D</td>
+                                <td>✅</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Passo 6 -->
+            <div class="dijkstra-step">
+                <h3><span class="step-number">6</span> Processar Vértice E (Final)</h3>
+                <p>Selecionamos E (último vértice não visitado: 20) e finalizamos o algoritmo.</p>
+                
+                <div class="graph-container">
+                    <div class="graph-visual">
+                        <pre>
+        <span class="node visited">A</span> ──────7────── <span class="node visited">B</span> ──────10────── <span class="node visited">D</span>
+         │                      │                      │
+         │                      │                      │
+         9                     15                     2
+         │                      │                      │
+         │                      │                      │
+        <span class="node visited">C</span> ──────11───── <span class="node visited">E</span> ──────6─────── <span class="node visited">F</span>
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vértice</th>
+                                <th>Distância Final</th>
+                                <th>Caminho Mais Curto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>A</strong></td>
+                                <td>0</td>
+                                <td>A</td>
+                            </tr>
+                            <tr>
+                                <td><strong>B</strong></td>
+                                <td>7</td>
+                                <td>A → B</td>
+                            </tr>
+                            <tr>
+                                <td><strong>C</strong></td>
+                                <td>9</td>
+                                <td>A → C</td>
+                            </tr>
+                            <tr>
+                                <td><strong>D</strong></td>
+                                <td>17</td>
+                                <td>A → B → D</td>
+                            </tr>
+                            <tr>
+                                <td><strong>E</strong></td>
+                                <td>20</td>
+                                <td>A → C → E</td>
+                            </tr>
+                            <tr>
+                                <td><strong>F</strong></td>
+                                <td>19</td>
+                                <td>A → B → D → F</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Implementação em Código -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Implementação em Python</h2>
+            <p class="section-subtitle">
+                Código completo e comentado do algoritmo de Dijkstra
+            </p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dot"></div>
+                    <div class="code-dot"></div>
+                    <div class="code-dot"></div>
+                    <span style="color: #a9b7c6; margin-left: 1rem;">dijkstra.py</span>
+                </div>
+                <div class="code-block">
+<pre><span class="keyword">import</span> heapq
+
+<span class="keyword">def</span> <span class="function">dijkstra</span>(graph, start):
+    <span class="comment"># Inicializa distâncias com infinito</span>
+    distances = {vertex: <span class="number">float</span>(<span class="string">'infinity'</span>) <span class="keyword">for</span> vertex <span class="keyword">in</span> graph}
+    distances[start] = <span class="number">0</span>
+    
+    <span class="comment"># Armazena os predecessores para reconstruir o caminho</span>
+    predecessors = {vertex: <span class="keyword">None</span> <span class="keyword">for</span> vertex <span class="keyword">in</span> graph}
+    
+    <span class="comment"># Fila de prioridade: (distância, vértice)</span>
+    priority_queue = [(0, start)]
+    visited = <span class="function">set</span>()
+    
+    <span class="keyword">while</span> priority_queue:
+        <span class="comment"># Pega o vértice com menor distância</span>
+        current_distance, current_vertex = heapq.<span class="function">heappop</span>(priority_queue)
+        
+        <span class="comment"># Se já visitou, pula</span>
+        <span class="keyword">if</span> current_vertex <span class="keyword">in</span> visited:
+            <span class="keyword">continue</span>
+        
+        visited.<span class="function">add</span>(current_vertex)
+        
+        <span class="comment"># Atualiza distâncias dos vizinhos</span>
+        <span class="keyword">for</span> neighbor, weight <span class="keyword">in</span> graph[current_vertex].<span class="function">items</span>():
+            distance = current_distance + weight
+            
+            <span class="comment"># Relaxamento: se encontrou caminho melhor, atualiza</span>
+            <span class="keyword">if</span> distance < distances[neighbor]:
+                distances[neighbor] = distance
+                predecessors[neighbor] = current_vertex
+                heapq.<span class="function">heappush</span>(priority_queue, (distance, neighbor))
+    
+    <span class="keyword">return</span> distances, predecessors
+
+<span class="keyword">def</span> <span class="function">get_shortest_path</span>(predecessors, start, end):
+    <span class="comment"># Reconstrói o caminho do fim ao início</span>
+    path = []
+    current = end
+    
+    <span class="keyword">while</span> current <span class="keyword">is not</span> <span class="keyword">None</span>:
+        path.<span class="function">append</span>(current)
+        current = predecessors[current]
+    
+    path.<span class="function">reverse</span>()
+    <span class="keyword">return</span> path <span class="keyword">if</span> path[0] == start <span class="keyword">else</span> []
+
+<span class="comment"># Exemplo de uso com o grafo do tutorial</span>
+graph = {
+    <span class="string">'A'</span>: {<span class="string">'B'</span>: <span class="number">7</span>, <span class="string">'C'</span>: <span class="number">9</span>},
+    <span class="string">'B'</span>: {<span class="string">'A'</span>: <span class="number">7</span>, <span class="string">'D'</span>: <span class="number">10</span>, <span class="string">'E'</span>: <span class="number">15</span>},
+    <span class="string">'C'</span>: {<span class="string">'A'</span>: <span class="number">9</span>, <span class="string">'E'</span>: <span class="number">11</span>},
+    <span class="string">'D'</span>: {<span class="string">'B'</span>: <span class="number">10</span>, <span class="string">'F'</span>: <span class="number">2</span>},
+    <span class="string">'E'</span>: {<span class="string">'B'</span>: <span class="number">15</span>, <span class="string">'C'</span>: <span class="number">11</span>, <span class="string">'F'</span>: <span class="number">6</span>},
+    <span class="string">'F'</span>: {<span class="string">'D'</span>: <span class="number">2</span>, <span class="string">'E'</span>: <span class="number">6</span>}
+}
+
+distances, predecessors = <span class="function">dijkstra</span>(graph, <span class="string">'A'</span>)
+
+<span class="comment"># Imprime resultados</span>
+<span class="keyword">for</span> vertex <span class="keyword">in</span> <span class="function">sorted</span>(distances.<span class="function">keys</span>()):
+    path = <span class="function">get_shortest_path</span>(predecessors, <span class="string">'A'</span>, vertex)
+    <span class="function">print</span>(<span class="string">f"Distância para {vertex}: {distances[vertex]}"</span>)
+    <span class="function">print</span>(<span class="string">f"Caminho: {' → '.join(path)}\n"</span>)
+</pre>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>🔍 Detalhes da Implementação</h4>
+                <p>
+                    <strong>1. Fila de Prioridade:</strong> Usamos um heap (heapq) para sempre pegar o vértice com menor distância em O(log V).<br><br>
+                    <strong>2. Conjunto Visitados:</strong> Evita processar o mesmo vértice múltiplas vezes.<br><br>
+                    <strong>3. Relaxamento:</strong> Quando encontramos um caminho melhor, atualizamos a distância e o predecessor.<br><br>
+                    <strong>4. Reconstrução do Caminho:</strong> Usamos o dicionário de predecessores para montar o caminho completo.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aplicações Práticas -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Aplicações no Mundo Real</h2>
+            <p class="section-subtitle">
+                Onde o algoritmo de Dijkstra é usado na prática
+            </p>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <span class="card-icon">🗺️</span>
+                    <h3>GPS e Navegação</h3>
+                    <p>
+                        Google Maps, Waze e outros apps de navegação usam variações do Dijkstra para 
+                        calcular a rota mais rápida entre dois pontos.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📡</span>
+                    <h3>Roteamento de Rede</h3>
+                    <p>
+                        Protocolos como OSPF (Open Shortest Path First) usam Dijkstra para encontrar 
+                        o melhor caminho para pacotes de dados na internet.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎮</span>
+                    <h3>Jogos e IA</h3>
+                    <p>
+                        NPCs (personagens não-jogáveis) usam Dijkstra para encontrar o caminho mais 
+                        curto até objetivos no mapa do jogo.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">✈️</span>
+                    <h3>Logística e Transporte</h3>
+                    <p>
+                        Empresas de entrega otimizam rotas de veículos para minimizar tempo e 
+                        custo de combustível.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">💰</span>
+                    <h3>Sistemas Financeiros</h3>
+                    <p>
+                        Análise de arbitragem em mercados financeiros para encontrar a melhor 
+                        sequência de conversões de moeda.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🏥</span>
+                    <h3>Saúde e Emergências</h3>
+                    <p>
+                        Ambulâncias usam rotas otimizadas para chegar mais rápido aos pacientes, 
+                        salvando vidas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparação com outros algoritmos -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Quando Usar Dijkstra?</h2>
+            <p class="section-subtitle">
+                Comparação com outros algoritmos de caminho mais curto
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Algoritmo</th>
+                            <th>Pesos Negativos</th>
+                            <th>Complexidade</th>
+                            <th>Melhor Uso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight">
+                            <td><strong>Dijkstra</strong></td>
+                            <td>❌ Não</td>
+                            <td>O((V + E) log V)</td>
+                            <td>Grafos com pesos positivos, origem única</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bellman-Ford</strong></td>
+                            <td>✅ Sim</td>
+                            <td>O(V × E)</td>
+                            <td>Grafos com pesos negativos, detecta ciclos negativos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>A* (A-Star)</strong></td>
+                            <td>❌ Não</td>
+                            <td>O(E)</td>
+                            <td>Quando há heurística disponível (ex: coordenadas geográficas)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Floyd-Warshall</strong></td>
+                            <td>✅ Sim</td>
+                            <td>O(V³)</td>
+                            <td>Todos os pares de vértices, grafos pequenos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BFS</strong></td>
+                            <td>N/A</td>
+                            <td>O(V + E)</td>
+                            <td>Grafos não ponderados (todas arestas peso 1)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ Limitações do Dijkstra</h4>
+                <p>
+                    <strong>1. Pesos Negativos:</strong> O algoritmo falha com pesos negativos porque assume que 
+                    adicionar mais arestas sempre aumenta o custo.<br><br>
+                    <strong>2. Todos os Pares:</strong> Para calcular distâncias entre todos os pares de vértices, 
+                    é necessário executar Dijkstra V vezes, totalizando O(V² log V + VE log V).<br><br>
+                    <strong>3. Memória:</strong> Requer O(V) de memória adicional para armazenar distâncias e predecessores.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exercícios -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Exercícios Práticos</h2>
+            <p class="section-subtitle">
+                Teste seu conhecimento sobre o algoritmo de Dijkstra
+            </p>
+
+            <div class="dijkstra-step">
+                <h3>📝 Exercício 1: Encontre o Caminho</h3>
+                <p>Aplique o algoritmo de Dijkstra no grafo abaixo para encontrar o caminho mais curto de S até T:</p>
+                <div class="graph-container">
+                    <div class="graph-visual">
+                        <pre>
+        <span class="node">S</span> ──────4────── <span class="node">A</span> ──────3────── <span class="node">T</span>
+         │                      │                      │
+         │                      │                      │
+         2                     1                     5
+         │                      │                      │
+         │                      │                      │
+        <span class="node">B</span> ──────7────── <span class="node">C</span> ──────2────── <span class="node">D</span>
+                        </pre>
+                    </div>
+                </div>
+                <p><strong>Desafio:</strong> Qual é a distância mínima? Qual o caminho?</p>
+            </div>
+
+            <div class="dijkstra-step">
+                <h3>📝 Exercício 2: Modifique o Código</h3>
+                <p>Adapte a implementação em Python para:</p>
+                <ul style="margin-left: 2rem; color: var(--gray); line-height: 2;">
+                    <li>Retornar apenas a distância para um vértice específico (otimização)</li>
+                    <li>Imprimir os vértices visitados na ordem</li>
+                    <li>Lidar com grafos direcionados vs. não-direcionados</li>
+                </ul>
+            </div>
+
+            <div class="dijkstra-step">
+                <h3>📝 Exercício 3: Análise de Complexidade</h3>
+                <p>Responda:</p>
+                <ul style="margin-left: 2rem; color: var(--gray); line-height: 2;">
+                    <li>Por que usamos uma fila de prioridade em vez de uma lista simples?</li>
+                    <li>O que acontece se não marcarmos vértices como visitados?</li>
+                    <li>Como a complexidade muda se usarmos um array em vez de heap?</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusão -->
+    <section class="section" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+        <div class="container">
+            <h2 style="font-size: 3rem; text-align: center; margin-bottom: 2rem; color: white;">
+                🎓 Parabéns!
+            </h2>
+            <p style="font-size: 1.3rem; text-align: center; max-width: 800px; margin: 0 auto; line-height: 2;">
+                Você aprendeu um dos algoritmos mais importantes da computação! O algoritmo de Dijkstra é 
+                fundamental para sistemas modernos e continua sendo amplamente usado 70 anos após sua descoberta.
+            </p>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="index.html" class="btn btn-primary">Voltar ao Início</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Animação suave ao scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Animação de fade-in ao scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card, .dijkstra-step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

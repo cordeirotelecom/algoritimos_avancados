@@ -1,0 +1,1257 @@
+/* ===== TREES MODULE STYLES ===== */
+
+.module-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.module-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+}
+
+.module-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.module-description {
+    font-size: 1.1rem;
+    opacity: 0.95;
+}
+
+.module-section {
+    margin-bottom: 3rem;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.module-section h3 {
+    color: #667eea;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid #667eea;
+}
+
+/* Concept Cards */
+.concept-card {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #667eea;
+}
+
+.concept-card.highlight {
+    background: linear-gradient(135deg, #e0e7ff 0%, #f0e7ff 100%);
+    border-left: 4px solid #764ba2;
+}
+
+.concept-card h4 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.concept-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.concept-card li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.concept-card li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: bold;
+}
+
+/* Terminology Grid */
+.terminology-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.term-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    border-top: 3px solid #667eea;
+    transition: transform 0.2s;
+}
+
+.term-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.term-card h5 {
+    color: #667eea;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+/* Visual Examples */
+.visual-example {
+    background: #2d3748;
+    color: #a0aec0;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-family: 'Courier New', monospace;
+}
+
+.visual-example pre {
+    margin: 0;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Code Sections */
+.code-section h4 {
+    color: #333;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.code-block {
+    background: #1a202c;
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.code-block pre {
+    margin: 0;
+    color: #e2e8f0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.code-block-mini {
+    background: #2d3748;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.code-block-mini pre {
+    margin: 0;
+    color: #cbd5e0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+}
+
+.code-block code {
+    color: #e2e8f0;
+}
+
+/* Traversal Grid */
+.traversal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.traversal-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+}
+
+.traversal-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.traversal-card h4 {
+    color: #667eea;
+    margin-bottom: 0.8rem;
+}
+
+.traversal-card p {
+    margin: 0.5rem 0;
+    color: #4a5568;
+}
+
+.traversal-card strong {
+    color: #2d3748;
+}
+
+/* Operations Grid */
+.operations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.operation-card {
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.operation-card h4 {
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.operation-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.operation-card li {
+    padding: 0.3rem 0;
+    color: #4a5568;
+}
+
+.operation-card .btn {
+    margin-top: 1rem;
+}
+
+/* Tree Visualizer */
+.tree-visualizer,
+.balanced-tree-visualizer {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+}
+
+.tree-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.tree-traversal-buttons {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+}
+
+.tree-traversal-buttons h4 {
+    margin: 0 0 0.8rem 0;
+    color: #2d3748;
+    font-size: 1rem;
+}
+
+.tree-traversal-buttons .btn {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Step by Step Guide */
+.step-by-step-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.step-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+}
+
+.step-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    transform: translateY(-5px);
+}
+
+.step-card h5 {
+    color: #667eea;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.step-card pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+}
+
+.step-card p {
+    color: #4a5568;
+    margin: 0.5rem 0;
+}
+
+.step-card.final-step {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+    border-color: #48bb78;
+}
+
+.step-card.final-step h5 {
+    color: #22543d;
+    font-size: 1.3rem;
+}
+
+.step-card.final-step ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0;
+}
+
+.step-card.final-step li {
+    padding: 0.3rem 0;
+    color: #2d3748;
+}
+
+.tree-controls input {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.8rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.tree-controls input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.tree-canvas,
+.balanced-canvas {
+    min-height: 400px;
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #cbd5e0;
+}
+
+.tree-canvas .placeholder,
+.balanced-canvas .placeholder {
+    color: #a0aec0;
+    font-size: 1.1rem;
+}
+
+.tree-info {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.tree-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.info-item,
+.info-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid #e2e8f0;
+}
+
+.info-item .label,
+.info-card .label {
+    display: block;
+    color: #718096;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.info-item .value,
+.info-card .value {
+    display: block;
+    color: #667eea;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+/* Complexity Tables */
+.complexity-table {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.complexity-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.complexity-table th,
+.complexity-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.complexity-table th {
+    background: #667eea;
+    color: white;
+    font-weight: 600;
+}
+
+.complexity-table tr:hover {
+    background: #f7fafc;
+}
+
+.complexity-good {
+    color: #38a169;
+    font-weight: bold;
+}
+
+.complexity-average {
+    color: #d69e2e;
+    font-weight: bold;
+}
+
+.complexity-bad {
+    color: #e53e3e;
+    font-weight: bold;
+}
+
+.complexity-excellent {
+    color: #38a169;
+    font-weight: bold;
+}
+
+.complexity-note {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #fff5f5;
+    border-left: 4px solid #fc8181;
+    border-radius: 6px;
+}
+
+.complexity-note strong {
+    color: #c53030;
+}
+
+/* Applications Grid */
+.applications-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.app-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+.app-card:hover {
+    transform: scale(1.05);
+}
+
+.app-card h4 {
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.app-card p {
+    opacity: 0.9;
+    font-size: 0.95rem;
+}
+
+/* Exercises */
+.exercise-list {
+    margin-top: 1.5rem;
+}
+
+.exercise-item {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+}
+
+.exercise-item:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.exercise-item h4 {
+    color: #2d3748;
+    margin-bottom: 0.8rem;
+}
+
+.exercise-item p {
+    color: #4a5568;
+    margin-bottom: 1rem;
+}
+
+/* Navigation Buttons */
+.module-navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    gap: 1rem;
+}
+
+.module-navigation-buttons .btn {
+    flex: 1;
+    max-width: 300px;
+}
+
+/* Balanced Trees Specific Styles */
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.comparison-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid #e2e8f0;
+}
+
+.comparison-item h5 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.comparison-item pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.comparison-item .warning {
+    color: #e53e3e;
+    font-weight: bold;
+}
+
+.comparison-item .success {
+    color: #38a169;
+    font-weight: bold;
+}
+
+.stats-comparison {
+    margin-top: 2rem;
+}
+
+.stats-comparison table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.stats-comparison th,
+.stats-comparison td {
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+}
+
+.stats-comparison th {
+    background: #667eea;
+    color: white;
+}
+
+.stats-comparison .success {
+    background: #c6f6d5;
+    color: #22543d;
+    font-weight: bold;
+}
+
+.stats-comparison .danger {
+    background: #fed7d7;
+    color: #742a2a;
+    font-weight: bold;
+}
+
+/* Rotation Cards */
+.rotations-intro {
+    background: #edf2f7;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.rotations-grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.rotation-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+}
+
+.rotation-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+}
+
+.rotation-card h4 {
+    color: #667eea;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.rotation-visual {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.rotation-visual .before,
+.rotation-visual .after {
+    flex: 1;
+    min-width: 200px;
+}
+
+.rotation-visual h5 {
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.rotation-visual pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.rotation-visual .arrow {
+    font-size: 2rem;
+    color: #667eea;
+    font-weight: bold;
+}
+
+.balance-examples {
+    margin-top: 2rem;
+}
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.example-item {
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+}
+
+.example-item.balanced {
+    background: #f0fff4;
+    border-color: #68d391;
+}
+
+.example-item.unbalanced {
+    background: #fff5f5;
+    border-color: #fc8181;
+}
+
+.example-item h5 {
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+}
+
+.example-item pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 0.8rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin: 0.5rem 0;
+}
+
+.formula-box {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    margin-top: 1rem;
+}
+
+.formula-box h5 {
+    color: #2d3748;
+    margin-bottom: 0.8rem;
+}
+
+.formula {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    color: #667eea;
+    font-style: italic;
+    margin: 1rem 0;
+}
+
+/* DSW Phases */
+.dsw-phases {
+    margin-top: 2rem;
+}
+
+.phase-card {
+    background: #f7fafc;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid #764ba2;
+}
+
+.phase-card h5 {
+    color: #764ba2;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.dsw-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.dsw-before,
+.dsw-after {
+    flex: 1;
+    min-width: 200px;
+}
+
+.dsw-visual pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.dsw-visual .caption {
+    text-align: center;
+    color: #4a5568;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.dsw-complexity {
+    margin-top: 2rem;
+}
+
+.comparison-table {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 1rem;
+    text-align: left;
+    border: 1px solid #e2e8f0;
+}
+
+.comparison-table th {
+    background: #667eea;
+    color: white;
+}
+
+.comparison-table tbody tr:hover {
+    background: #f7fafc;
+}
+
+.use-cases {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.use-case-card {
+    background: linear-gradient(135deg, #e0e7ff 0%, #f0e7ff 100%);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.use-case-card h4 {
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.use-case-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.use-case-card li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #4a5568;
+}
+
+.use-case-card li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: bold;
+}
+
+/* Rotation Examples */
+.rotation-example-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.rotation-example-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+}
+
+.rotation-example-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.rotation-example-card.danger {
+    background: #fff5f5;
+    border-color: #fc8181;
+}
+
+.rotation-example-card.success {
+    background: #f0fff4;
+    border-color: #68d391;
+}
+
+.rotation-example-card h5 {
+    color: #2d3748;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.rotation-example-card pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin: 1rem 0;
+}
+
+.rotation-example-card p {
+    margin: 0.5rem 0;
+    color: #4a5568;
+}
+
+.rotation-example-card strong {
+    color: #2d3748;
+}
+
+/* Comparison Scenarios */
+.comparison-scenarios {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: #f7fafc;
+    border-radius: 10px;
+}
+
+.comparison-scenarios h4 {
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.scenarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.scenario-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.scenario-card h5 {
+    color: #667eea;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.scenario-label {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.scenario-card pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 1.5rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.scenario-card .stats {
+    background: #edf2f7;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.scenario-card .stats p {
+    margin: 0.5rem 0;
+    color: #2d3748;
+}
+
+.tree-type-selector {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.tree-type-selector .btn {
+    min-width: 150px;
+}
+
+.tree-type-selector .btn.active {
+    background: #667eea;
+    color: white;
+}
+
+/* Examples Container */
+.examples-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 2px solid #e2e8f0;
+}
+
+.examples-container h4 {
+    margin: 0 0 1rem 0;
+    color: #2d3748;
+    font-size: 1rem;
+}
+
+.example-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-outline-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: 2px solid #e2e8f0;
+    background: white;
+    color: #4a5568;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.btn-outline-sm:hover {
+    border-color: #667eea;
+    background: #f7fafc;
+    color: #667eea;
+    transform: translateY(-2px);
+}
+
+.btn-outline-sm:active {
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .module-container {
+        padding: 1rem;
+    }
+    
+    .module-header h2 {
+        font-size: 2rem;
+    }
+    
+    .terminology-grid,
+    .traversal-grid,
+    .operations-grid,
+    .applications-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rotation-visual,
+    .dsw-visual {
+        flex-direction: column;
+    }
+    
+    .rotation-visual .arrow {
+        transform: rotate(90deg);
+    }
+    
+    .module-navigation-buttons {
+        flex-direction: column;
+    }
+    
+    .module-navigation-buttons .btn {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .module-header {
+        padding: 1.5rem;
+    }
+    
+    .module-section {
+        padding: 1rem;
+    }
+    
+    .tree-controls {
+        flex-direction: column;
+    }
+    
+    .tree-controls input,
+    .tree-controls .btn {
+        width: 100%;
+    }
+}
+
+/* ===== VISUAL EXAMPLES STYLES ===== */
+
+.visual-examples-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+.examples-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.example-select {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.example-select:hover {
+    border-color: #764ba2;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+.example-select:focus {
+    outline: none;
+    border-color: #764ba2;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.animation-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn-control {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-control:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-control:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#stepIndicator {
+    font-weight: 600;
+    color: #667eea;
+    min-width: 100px;
+    text-align: center;
+}
+
+.canvas-container {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+#tree-visual-canvas {
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+}
+
+.example-description {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.example-description h4 {
+    color: #667eea;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.example-description p {
+    color: #374151;
+    margin: 0;
+}
+
+.tutorial-box {
+    background: #eff6ff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+    margin-top: 1rem;
+}
+
+.tutorial-box h4 {
+    color: #1e40af;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.tutorial-box ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.tutorial-box li {
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.tutorial-box strong {
+    color: #1e40af;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .examples-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .example-select {
+        width: 100%;
+    }
+
+    .animation-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    #tree-visual-canvas {
+        width: 100%;
+    }
+}

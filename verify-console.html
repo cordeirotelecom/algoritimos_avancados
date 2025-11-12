@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>🧪 Verificador de Erros - Console</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #667eea; margin-bottom: 20px; }
+        .console-section {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .console-log { 
+            background: #222;
+            border: 1px solid #444;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+        .log-entry { margin: 5px 0; }
+        .error { color: #ff6b6b; }
+        .warn { color: #ffd93d; }
+        .success { color: #6bcf7f; }
+        .info { color: #a8dadc; }
+        .button-group { margin: 20px 0; display: flex; gap: 10px; }
+        button { 
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        button:hover { background: #764ba2; }
+        .status-box {
+            background: #1e3a1f;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .status-box.error {
+            background: #3a1e1e;
+            border-color: #ff6b6b;
+        }
+        .status-box.warn {
+            background: #3a3a1e;
+            border-color: #ffd93d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Verificador de Erros do Console</h1>
+        
+        <div class="button-group">
+            <button onclick="verificarPagina()">🔍 Verificar Página Principal</button>
+            <button onclick="verificarModuloGrafos()">🕸️ Verificar Módulo de Grafos</button>
+            <button onclick="limparLogs()">🗑️ Limpar Logs</button>
+        </div>
+
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        // Capturar todos os console.log, warn, error
+        const logs = [];
+        const erros = [];
+        const avisos = [];
+        
+        // Override console methods
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        console.log = function(...args) {
+            logs.push(args.join(' '));
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            erros.push(args.join(' '));
+            originalError.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+            avisos.push(args.join(' '));
+            originalWarn.apply(console, args);
+        };
+        
+        function mostrarResultados() {
+            const resultado = document.getElementById('resultado');
+            let html = '';
+            
+            // Status geral
+            if (erros.length === 0) {
+                html += `<div class="status-box"><strong>✅ Sem erros detectados!</strong></div>`;
+            } else {
+                html += `<div class="status-box error"><strong>❌ ${erros.length} erro(s) encontrado(s)</strong></div>`;
+            }
+            
+            if (avisos.length > 0) {
+                html += `<div class="status-box warn"><strong>⚠️ ${avisos.length} aviso(s)</strong></div>`;
+            }
+            
+            // Seção de Console
+            html += `<div class="console-section">
+                <h3>📋 Console Output (${logs.length + erros.length + avisos.length} mensagens)</h3>
+                <div class="console-log">`;
+            
+            // Erros
+            erros.forEach(e => {
+                html += `<div class="log-entry error">❌ ERROR: ${e}</div>`;
+            });
+            
+            // Avisos
+            avisos.forEach(w => {
+                html += `<div class="log-entry warn">⚠️ WARN: ${w}</div>`;
+            });
+            
+            // Logs
+            logs.slice(-50).forEach(l => {
+                if (l.includes('✅')) {
+                    html += `<div class="log-entry success">${l}</div>`;
+                } else if (l.includes('Erro') || l.includes('Error')) {
+                    html += `<div class="log-entry error">${l}</div>`;
+                } else {
+                    html += `<div class="log-entry info">ℹ️ ${l}</div>`;
+                }
+            });
+            
+            html += `</div></div>`;
+            
+            resultado.innerHTML = html;
+        }
+        
+        function verificarPagina() {
+            logs.length = 0;
+            erros.length = 0;
+            avisos.length = 0;
+            
+            console.log('🔍 Iniciando verificação da página principal...');
+            
+            // Verificar estrutura HTML
+            const requiredElements = [
+                'mainContent',
+                'algorithmSelection',
+                'visualizationContainer',
+                'customDataSection'
+            ];
+            
+            requiredElements.forEach(el => {
+                const elem = document.getElementById(el);
+                if (elem) {
+                    console.log(`✅ Elemento encontrado: #${el}`);
+                } else {
+                    console.error(`❌ Elemento não encontrado: #${el}`);
+                }
+            });
+            
+            // Verificar scripts carregados
+            console.log('📚 Scripts carregados:');
+            document.querySelectorAll('script[src]').forEach(s => {
+                console.log(`  ✓ ${s.src.split('/').pop()}`);
+            });
+            
+            // Verificar CSS carregado
+            console.log('🎨 Stylesheets carregados:');
+            document.querySelectorAll('link[rel="stylesheet"]').forEach(l => {
+                console.log(`  ✓ ${l.href.split('/').pop()}`);
+            });
+            
+            // Verificar classes globais
+            console.log('📦 Classes globais:');
+            const classesToCheck = [
+                'SortingAlgorithms',
+                'VisualizationController',
+                'GamificationController',
+                'SoundEffectsController'
+            ];
+            
+            classesToCheck.forEach(cls => {
+                if (typeof window[cls] !== 'undefined') {
+                    console.log(`✅ Classe ${cls} disponível`);
+                } else {
+                    console.warn(`⚠️ Classe ${cls} não encontrada`);
+                }
+            });
+            
+            console.log('✨ Verificação concluída!');
+            mostrarResultados();
+        }
+        
+        function verificarModuloGrafos() {
+            logs.length = 0;
+            erros.length = 0;
+            avisos.length = 0;
+            
+            console.log('🕸️ Iniciando verificação do Módulo de Grafos...');
+            
+            // Verificar se o módulo existe
+            if (typeof window.GraphsModule !== 'undefined') {
+                console.log('✅ GraphsModule carregado');
+                if (typeof GraphsModule.render === 'function') {
+                    console.log('✅ Método render disponível');
+                } else {
+                    console.error('❌ Método render não encontrado');
+                }
+            } else {
+                console.error('❌ GraphsModule não carregado');
+            }
+            
+            // Verificar visualizadores
+            const visualizers = [
+                'GraphVisualization',
+                'GraphAlgorithmsVisualizer'
+            ];
+            
+            visualizers.forEach(viz => {
+                if (typeof window[viz] !== 'undefined') {
+                    console.log(`✅ ${viz} disponível`);
+                } else {
+                    console.warn(`⚠️ ${viz} não encontrado`);
+                }
+            });
+            
+            // Verificar funções de inicialização
+            const initFunctions = [
+                'initializeGraphVisualization',
+                'initializeGraphAlgorithms'
+            ];
+            
+            initFunctions.forEach(fn => {
+                if (typeof window[fn] === 'function') {
+                    console.log(`✅ Função ${fn} disponível`);
+                } else {
+                    console.warn(`⚠️ Função ${fn} não encontrada`);
+                }
+            });
+            
+            // Verificar canvas
+            const canvas = document.getElementById('graph-canvas');
+            if (canvas) {
+                console.log('✅ Canvas de grafo encontrado');
+            } else {
+                console.warn('⚠️ Canvas graph-canvas não encontrado');
+            }
+            
+            const searchCanvas = document.getElementById('search-canvas');
+            if (searchCanvas) {
+                console.log('✅ Canvas de busca encontrado');
+            } else {
+                console.warn('⚠️ Canvas search-canvas não encontrado');
+            }
+            
+            console.log('✨ Verificação de Grafos concluída!');
+            mostrarResultados();
+        }
+        
+        function limparLogs() {
+            logs.length = 0;
+            erros.length = 0;
+            avisos.length = 0;
+            document.getElementById('resultado').innerHTML = '<p>Logs limpos. Clique em um botão de verificação para iniciar.</p>';
+        }
+        
+        // Executar verificação inicial ao carregar
+        window.addEventListener('load', () => {
+            console.log('🚀 Página carregada, console pronto para verificação');
+            verificarPagina();
+        });
+    </script>
+</body>
+</html>

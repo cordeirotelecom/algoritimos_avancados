@@ -1,7 +1,10 @@
 ﻿// ===== MAIN APPLICATION CONTROLLER =====
 
+console.log('📄 app.js carregado - início do arquivo');
+
 class SortingGameApp {
     constructor() {
+        console.log('🔧 Construtor SortingGameApp iniciado');
         this.currentAlgorithm = null;
         this.visualizationController = new VisualizationController();
         this.progressController = window.progressController;
@@ -39,6 +42,12 @@ class SortingGameApp {
         // Initialize educational system
         this.educationalController = null; // Will be set when available
         
+        // Initialize enhanced visualization
+        this.initializeEnhancedVisualization();
+        
+        // Initialize new advanced controllers
+        this.initializeAdvancedControllers();
+        
         this.initializeEventListeners();
         this.initializeUI();
         
@@ -49,13 +58,110 @@ class SortingGameApp {
         this.visualizationController.generateRandomArray();
     }
 
+    initializeEnhancedVisualization() {
+        // Initialize enhanced visualization system
+        try {
+            if (this.visualizationController && typeof EnhancedVisualizationController !== 'undefined') {
+                this.enhancedVisualization = this.visualizationController.initializeEnhancedMode();
+                console.log('🎨 Enhanced Visualization inicializado');
+            }
+        } catch (error) {
+            console.warn('Enhanced Visualization não pôde ser inicializado:', error);
+        }
+    }
+
+    initializeAdvancedControllers() {
+        // Initialize Module System
+        try {
+            if (typeof ModuleSystemController !== 'undefined') {
+                this.moduleSystem = new ModuleSystemController();
+                console.log('🎓 Module System inicializado');
+            }
+        } catch (error) {
+            console.warn('Module System não pôde ser inicializado:', error);
+        }
+
+        // Initialize Charts Controller
+        try {
+            if (typeof ChartsController !== 'undefined') {
+                this.chartsController = new ChartsController();
+                console.log('📈 Charts Controller inicializado');
+            }
+        } catch (error) {
+            console.warn('Charts Controller não pôde ser inicializado:', error);
+        }
+
+        // Initialize Comparison Controller
+        try {
+            if (typeof ComparisonController !== 'undefined') {
+                this.comparisonController = new ComparisonController(this.visualizationController);
+                console.log('🆚 Comparison Controller inicializado');
+            }
+        } catch (error) {
+            console.warn('Comparison Controller não pôde ser inicializado:', error);
+        }
+
+        // Initialize Enhanced Educational Controller
+        try {
+            if (typeof EnhancedEducationalController !== 'undefined') {
+                this.enhancedEducationalController = new EnhancedEducationalController();
+                console.log('📚 Enhanced Educational Controller inicializado');
+            }
+        } catch (error) {
+            console.warn('Enhanced Educational Controller não pôde ser inicializado:', error);
+        }
+
+        // Initialize Analytics Dashboard Controller
+        try {
+            if (typeof AnalyticsDashboardController !== 'undefined') {
+                this.analyticsDashboardController = new AnalyticsDashboardController();
+                console.log('📊 Analytics Dashboard Controller inicializado');
+            }
+        } catch (error) {
+            console.warn('Analytics Dashboard Controller não pôde ser inicializado:', error);
+        }
+    }
+
     initializeEventListeners() {
+        console.log('🎯 Inicializando event listeners...');
+        
         // Algorithm selection cards
-        document.querySelectorAll('.algorithm-card').forEach(card => {
+        const cards = document.querySelectorAll('.algorithm-card');
+        console.log(`📋 Encontrados ${cards.length} cards de algoritmos`);
+        
+        cards.forEach((card, index) => {
+            const algorithm = card.getAttribute('data-algorithm');
+            console.log(`  ${index + 1}. Card: ${algorithm}`);
+            
             card.addEventListener('click', (e) => {
-                const algorithm = card.getAttribute('data-algorithm');
-                // Sound removed for simplicity
+                console.log(`🎯 Clique detectado no card: ${algorithm}`);
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Adiciona feedback visual
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 200);
+                
+                // Chama método de seleção
                 this.selectAlgorithm(algorithm);
+            });
+            
+            // Adiciona efeito hover
+            card.style.cursor = 'pointer';
+            card.style.transition = 'transform 0.2s ease, box-shadow 0.3s ease';
+            
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+                card.style.boxShadow = '0 10px 30px rgba(102, 126, 234, 0.3)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (!card.classList.contains('selected')) {
+                    card.style.transform = '';
+                    card.style.boxShadow = '';
+                }
             });
         });
 
@@ -83,12 +189,32 @@ class SortingGameApp {
         const settingsBtn = document.getElementById('settingsBtn');
         const exportBtn = document.getElementById('exportBtn');
         const shareBtn = document.getElementById('shareBtn');
+
+        // New advanced feature buttons
+        const openComparisonBtn = document.getElementById('openComparison');
+        const openAnalyticsBtn = document.getElementById('openAnalytics');
+        const openChartsBtn = document.getElementById('openCharts');
+        const openTutorialsBtn = document.getElementById('openTutorials');
         
         // Modal controls
         const settingsModal = document.getElementById('settingsModal');
         const tutorialModal = document.getElementById('tutorialModal');
         const closeSettings = document.getElementById('closeSettings');
         const closeTutorial = document.getElementById('closeTutorial');
+
+        // New modal controls
+        const comparisonModal = document.getElementById('comparisonModal');
+        const analyticsModal = document.getElementById('analyticsModal');
+        const chartsModal = document.getElementById('chartsModal');
+        const closeComparisonModal = document.getElementById('closeComparisonModal');
+        const closeAnalyticsModal = document.getElementById('closeAnalyticsModal');
+        const closeChartsModal = document.getElementById('closeChartsModal');
+
+        // Enhanced visualization controls
+        const enhancedVisualizationToggle = document.getElementById('enhancedVisualization');
+        const colorSchemeSelect = document.getElementById('colorSchemeSelect');
+        const particlesEnabledToggle = document.getElementById('particlesEnabled');
+        const realTimeStatsToggle = document.getElementById('realTimeStats');
 
         if (generateBtn) {
             generateBtn.addEventListener('click', () => this.generateNewArray());
@@ -158,6 +284,29 @@ class SortingGameApp {
         if (shareBtn) {
             shareBtn.addEventListener('click', () => this.shareCurrentResults());
         }
+
+        // New advanced feature buttons
+        if (openComparisonBtn) {
+            openComparisonBtn.addEventListener('click', () => this.openAdvancedComparison());
+        }
+
+        if (openAnalyticsBtn) {
+            openAnalyticsBtn.addEventListener('click', () => this.openAnalyticsDashboard());
+        }
+
+        if (openChartsBtn) {
+            openChartsBtn.addEventListener('click', () => this.openChartsModal());
+        }
+
+        if (openTutorialsBtn) {
+            openTutorialsBtn.addEventListener('click', () => this.openTutorialsMenu());
+        }
+
+        // AVL Educational Button
+        const openAVLEducationalBtn = document.getElementById('openAVLEducational');
+        if (openAVLEducationalBtn) {
+            openAVLEducationalBtn.addEventListener('click', () => this.openAVLEducational());
+        }
         
         // Modal controls
         if (closeSettings) {
@@ -166,6 +315,63 @@ class SortingGameApp {
         
         if (closeTutorial) {
             closeTutorial.addEventListener('click', () => this.closeTutorial());
+        }
+
+        // New modal close controls
+        if (closeComparisonModal) {
+            closeComparisonModal.addEventListener('click', () => this.closeComparisonModal());
+        }
+
+        if (closeAnalyticsModal) {
+            closeAnalyticsModal.addEventListener('click', () => this.closeAnalyticsModal());
+        }
+
+        if (closeChartsModal) {
+            closeChartsModal.addEventListener('click', () => this.closeChartsModal());
+        }
+
+        // Close modals when clicking outside
+        if (comparisonModal) {
+            comparisonModal.addEventListener('click', (e) => {
+                if (e.target === comparisonModal) this.closeComparisonModal();
+            });
+        }
+
+        if (analyticsModal) {
+            analyticsModal.addEventListener('click', (e) => {
+                if (e.target === analyticsModal) this.closeAnalyticsModal();
+            });
+        }
+
+        if (chartsModal) {
+            chartsModal.addEventListener('click', (e) => {
+                if (e.target === chartsModal) this.closeChartsModal();
+            });
+        }
+
+        // Enhanced visualization controls
+        if (enhancedVisualizationToggle) {
+            enhancedVisualizationToggle.addEventListener('change', (e) => {
+                this.toggleEnhancedVisualization(e.target.checked);
+            });
+        }
+
+        if (colorSchemeSelect) {
+            colorSchemeSelect.addEventListener('change', (e) => {
+                this.changeColorScheme(e.target.value);
+            });
+        }
+
+        if (particlesEnabledToggle) {
+            particlesEnabledToggle.addEventListener('change', (e) => {
+                this.toggleParticles(e.target.checked);
+            });
+        }
+
+        if (realTimeStatsToggle) {
+            realTimeStatsToggle.addEventListener('change', (e) => {
+                this.toggleRealTimeStats(e.target.checked);
+            });
         }
         
         // Settings form
@@ -322,40 +528,57 @@ class SortingGameApp {
     }
 
     selectAlgorithm(algorithm) {
+        console.log(`\n🎮 Selecionando algoritmo: ${algorithm}`);
+        
         if (!ALGORITHMS[algorithm]) {
-            console.error('Invalid algorithm:', algorithm);
+            console.error(`❌ Algoritmo inválido: ${algorithm}`);
+            console.error('Algoritmos disponíveis:', Object.keys(ALGORITHMS));
+            
+            // Mostra alerta visual
+            this.showAlert('Erro', `Algoritmo "${algorithm}" não encontrado!`, 'error');
             return;
         }
 
+        console.log(`✅ Algoritmo encontrado:`, ALGORITHMS[algorithm].name);
         this.currentAlgorithm = algorithm;
         
         // Update progress controller
         if (this.progressController) {
             this.progressController.setCurrentAlgorithm(ALGORITHMS[algorithm].name);
+            console.log('✅ Progress controller atualizado');
         }
         
         // Update visualization
         this.visualizationController.setAlgorithmInfo(algorithm);
+        console.log('✅ Visualization controller atualizado');
         
         // Generate initial array if none exists
         if (this.visualizationController.array.length === 0) {
             this.visualizationController.generateRandomArray(10, 10, 99);
+            console.log('✅ Array inicial gerado');
         }
         
         // Update educational content
         this.updateEducationalContent(algorithm);
+        console.log('✅ Conteúdo educacional atualizado');
         
         // Show visualization area with animation
         const selectionArea = document.querySelector('.algorithm-selection');
         const visualizationArea = document.getElementById('visualizationArea');
         
+        console.log('Mudando visualização...');
+        console.log('  - Selection area:', selectionArea ? 'encontrada' : 'NÃO encontrada');
+        console.log('  - Visualization area:', visualizationArea ? 'encontrada' : 'NÃO encontrada');
+        
         if (selectionArea) {
             selectionArea.style.display = 'none';
+            console.log('✅ Área de seleção ocultada');
         }
         
         if (visualizationArea) {
             visualizationArea.style.display = 'block';
             visualizationArea.classList.add('visualization-enter');
+            console.log('✅ Área de visualização exibida');
             
             setTimeout(() => {
                 visualizationArea.classList.remove('visualization-enter');
@@ -370,6 +593,7 @@ class SortingGameApp {
         const selectedCard = document.querySelector(`[data-algorithm="${algorithm}"]`);
         if (selectedCard) {
             selectedCard.classList.add('selected');
+            console.log('✅ Card marcado como selecionado');
         }
 
         // Show enhanced welcome message with educational features
@@ -377,6 +601,8 @@ class SortingGameApp {
 
         // Show help tooltip for first-time users
         this.showKeyboardShortcuts();
+        
+        console.log(`\n🎉 Algoritmo "${ALGORITHMS[algorithm].name}" selecionado com sucesso!\n`);
     }
 
     startSorting() {
@@ -1755,6 +1981,495 @@ class SortingGameApp {
             );
         }
     }
+
+    // ===== NEW ADVANCED FEATURES METHODS =====
+
+    openAdvancedComparison() {
+        if (this.comparisonController) {
+            const modal = document.getElementById('comparisonModal');
+            const modalBody = document.getElementById('comparisonModalBody');
+            
+            if (modal && modalBody) {
+                // Render comparison interface
+                this.comparisonController.renderComparisonInterface(modalBody);
+                modal.style.display = 'flex';
+                
+                // Track analytics
+                if (this.analyticsDashboardController) {
+                    this.analyticsDashboardController.trackAction('comparison_opened');
+                }
+                
+                console.log('🆚 Comparison modal opened');
+            }
+        } else {
+            console.warn('Comparison Controller não está disponível');
+            this.showNotification('Recurso de comparação não está disponível', 'warning');
+        }
+    }
+
+    closeComparisonModal() {
+        const modal = document.getElementById('comparisonModal');
+        if (modal) {
+            modal.style.display = 'none';
+            
+            // Clean up comparison controller
+            if (this.comparisonController) {
+                this.comparisonController.cleanup();
+            }
+            
+            console.log('🆚 Comparison modal closed');
+        }
+    }
+
+    openAnalyticsDashboard() {
+        if (this.analyticsDashboardController) {
+            const modal = document.getElementById('analyticsModal');
+            const modalBody = document.getElementById('analyticsModalBody');
+            
+            if (modal && modalBody) {
+                // Render analytics dashboard
+                this.analyticsDashboardController.renderDashboard(modalBody);
+                modal.style.display = 'flex';
+                
+                // Track analytics
+                this.analyticsDashboardController.trackAction('dashboard_opened');
+                
+                console.log('📊 Analytics dashboard opened');
+            }
+        } else {
+            console.warn('Analytics Dashboard Controller não está disponível');
+            this.showNotification('Recurso de analytics não está disponível', 'warning');
+        }
+    }
+
+    closeAnalyticsModal() {
+        const modal = document.getElementById('analyticsModal');
+        if (modal) {
+            modal.style.display = 'none';
+            console.log('📊 Analytics dashboard closed');
+        }
+    }
+
+    openChartsModal() {
+        if (this.chartsController) {
+            const modal = document.getElementById('chartsModal');
+            const modalBody = document.getElementById('chartsModalBody');
+            
+            if (modal && modalBody) {
+                // Clear previous content
+                modalBody.innerHTML = '';
+                
+                // Create charts container
+                const chartsContainer = document.createElement('div');
+                chartsContainer.className = 'charts-container';
+                
+                // Add charts interface
+                chartsContainer.innerHTML = `
+                    <div class="charts-controls">
+                        <div class="chart-type-selector">
+                            <label>Tipo de Gráfico:</label>
+                            <select id="chartTypeSelect">
+                                <option value="bar">Barras</option>
+                                <option value="line">Linha</option>
+                                <option value="area">Área</option>
+                                <option value="scatter">Dispersão</option>
+                                <option value="radar">Radar</option>
+                            </select>
+                        </div>
+                        <div class="data-selector">
+                            <label>Dados:</label>
+                            <select id="chartDataSelect">
+                                <option value="performance">Performance dos Algoritmos</option>
+                                <option value="complexity">Complexidade</option>
+                                <option value="comparisons">Comparações por Tamanho</option>
+                                <option value="swaps">Trocas por Tamanho</option>
+                            </select>
+                        </div>
+                        <button id="generateChart" class="btn btn-primary">Gerar Gráfico</button>
+                    </div>
+                    <div class="chart-canvas-container">
+                        <canvas id="performanceChart" width="800" height="400"></canvas>
+                    </div>
+                `;
+                
+                modalBody.appendChild(chartsContainer);
+                
+                // Add event listeners for chart controls
+                const generateBtn = chartsContainer.querySelector('#generateChart');
+                const chartTypeSelect = chartsContainer.querySelector('#chartTypeSelect');
+                const dataSelect = chartsContainer.querySelector('#chartDataSelect');
+                
+                generateBtn.addEventListener('click', () => {
+                    const chartType = chartTypeSelect.value;
+                    const dataType = dataSelect.value;
+                    const canvas = chartsContainer.querySelector('#performanceChart');
+                    
+                    this.chartsController.renderChart(canvas, chartType, this.generateSampleData(dataType));
+                });
+                
+                modal.style.display = 'flex';
+                
+                // Generate initial chart
+                setTimeout(() => {
+                    generateBtn.click();
+                }, 100);
+                
+                // Track analytics
+                if (this.analyticsDashboardController) {
+                    this.analyticsDashboardController.trackAction('charts_opened');
+                }
+                
+                console.log('📈 Charts modal opened');
+            }
+        } else {
+            console.warn('Charts Controller não está disponível');
+            this.showNotification('Recurso de gráficos não está disponível', 'warning');
+        }
+    }
+
+    closeChartsModal() {
+        const modal = document.getElementById('chartsModal');
+        if (modal) {
+            modal.style.display = 'none';
+            console.log('📈 Charts modal closed');
+        }
+    }
+
+    generateSampleData(dataType) {
+        // Generate sample data based on type
+        switch (dataType) {
+            case 'performance':
+                return {
+                    labels: ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Quick Sort', 'Merge Sort', 'Heap Sort'],
+                    datasets: [{
+                        label: 'Tempo (ms)',
+                        data: [120, 95, 85, 25, 35, 40],
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)'
+                    }]
+                };
+            case 'complexity':
+                return {
+                    labels: ['n=10', 'n=50', 'n=100', 'n=500', 'n=1000'],
+                    datasets: [{
+                        label: 'O(n²)',
+                        data: [100, 2500, 10000, 250000, 1000000],
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)'
+                    }, {
+                        label: 'O(n log n)',
+                        data: [33, 282, 664, 4482, 9966],
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)'
+                    }]
+                };
+            case 'comparisons':
+                return {
+                    labels: ['10', '25', '50', '100', '200'],
+                    datasets: [{
+                        label: 'Comparações',
+                        data: [45, 300, 1225, 4950, 19900],
+                        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                        borderColor: 'rgba(153, 102, 255, 1)'
+                    }]
+                };
+            case 'swaps':
+                return {
+                    labels: ['10', '25', '50', '100', '200'],
+                    datasets: [{
+                        label: 'Trocas',
+                        data: [25, 156, 625, 2500, 10000],
+                        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                        borderColor: 'rgba(255, 159, 64, 1)'
+                    }]
+                };
+            default:
+                return { labels: [], datasets: [] };
+        }
+    }
+
+    // ===== ENHANCED VISUALIZATION METHODS =====
+
+    toggleEnhancedVisualization(enabled) {
+        if (this.enhancedVisualization) {
+            const wasEnabled = this.enhancedVisualization.toggleEnhancedMode();
+            console.log(`🎨 Enhanced visualization ${wasEnabled ? 'enabled' : 'disabled'}`);
+            
+            // Refresh current visualization
+            if (this.visualizationController && this.visualizationController.array.length > 0) {
+                this.visualizationController.updateVisualization();
+            }
+            
+            this.showNotification(
+                `Visualização aprimorada ${wasEnabled ? 'ativada' : 'desativada'}`,
+                wasEnabled ? 'success' : 'info'
+            );
+        }
+    }
+
+    changeColorScheme(scheme) {
+        if (this.enhancedVisualization) {
+            this.enhancedVisualization.setColorScheme(scheme);
+            console.log(`🎨 Color scheme changed to: ${scheme}`);
+            this.showNotification(`Esquema de cores alterado para: ${scheme}`, 'info');
+        }
+    }
+
+    toggleParticles(enabled) {
+        if (this.enhancedVisualization) {
+            this.enhancedVisualization.updateSettings({ particlesEnabled: enabled });
+            console.log(`✨ Particles ${enabled ? 'enabled' : 'disabled'}`);
+            this.showNotification(
+                `Efeitos visuais ${enabled ? 'ativados' : 'desativados'}`,
+                enabled ? 'success' : 'info'
+            );
+        }
+    }
+
+    toggleRealTimeStats(enabled) {
+        if (this.enhancedVisualization) {
+            this.enhancedVisualization.updateSettings({ realTimeStats: enabled });
+            console.log(`📊 Real-time stats ${enabled ? 'enabled' : 'disabled'}`);
+            
+            // Show/hide enhanced stats container
+            const statsContainer = document.getElementById('enhancedStats');
+            if (statsContainer) {
+                statsContainer.style.display = enabled ? 'block' : 'none';
+            }
+            
+            this.showNotification(
+                `Estatísticas em tempo real ${enabled ? 'ativadas' : 'desativadas'}`,
+                enabled ? 'success' : 'info'
+            );
+        }
+    }
+
+    // ===== TUTORIAL SYSTEM METHODS =====
+
+    openTutorialsMenu() {
+        if (window.advancedTutorialSystem) {
+            // Create tutorial selection modal
+            const tutorialMenuHTML = `
+                <div id="tutorialMenuModal" class="modal-overlay" style="display: flex;">
+                    <div class="modal-content tutorial-menu-modal">
+                        <div class="modal-header">
+                            <h2>📚 Tutoriais Interativos</h2>
+                            <button class="modal-close" id="closeTutorialMenu">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="tutorial-menu-content">
+                                <div class="tutorial-intro">
+                                    <p>Aprenda algoritmos de ordenação através de tutoriais interativos com simulações, exercícios práticos e avaliações.</p>
+                                </div>
+                                <div class="tutorial-cards">
+                                    <div class="tutorial-card" data-tutorial="sorting-basics">
+                                        <div class="tutorial-card-header">
+                                            <h3>🎯 Fundamentos de Ordenação</h3>
+                                            <span class="tutorial-difficulty beginner">Iniciante</span>
+                                        </div>
+                                        <p>Aprenda os conceitos básicos de algoritmos de ordenação</p>
+                                        <div class="tutorial-meta">
+                                            <span>⏱️ 15 min</span>
+                                            <span>🎯 4 etapas</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tutorial-card" data-tutorial="bubble-sort-deep">
+                                        <div class="tutorial-card-header">
+                                            <h3>🫧 Bubble Sort Profundo</h3>
+                                            <span class="tutorial-difficulty beginner">Iniciante</span>
+                                        </div>
+                                        <p>Dominar completamente o algoritmo Bubble Sort</p>
+                                        <div class="tutorial-meta">
+                                            <span>⏱️ 20 min</span>
+                                            <span>🎯 4 etapas</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tutorial-card" data-tutorial="comparison-algorithms">
+                                        <div class="tutorial-card-header">
+                                            <h3>⚖️ Comparando Algoritmos</h3>
+                                            <span class="tutorial-difficulty intermediate">Intermediário</span>
+                                        </div>
+                                        <p>Compare diferentes algoritmos de ordenação</p>
+                                        <div class="tutorial-meta">
+                                            <span>⏱️ 25 min</span>
+                                            <span>🎯 2 etapas</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="tutorial-progress-section" id="tutorialProgressSection">
+                                    <h3>Seu Progresso</h3>
+                                    <div id="progressDisplay">
+                                        <!-- Progress will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Remove existing modal if present
+            const existingModal = document.getElementById('tutorialMenuModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
+            // Add modal to page
+            document.body.insertAdjacentHTML('beforeend', tutorialMenuHTML);
+
+            // Setup event listeners
+            document.getElementById('closeTutorialMenu').addEventListener('click', () => {
+                document.getElementById('tutorialMenuModal').remove();
+            });
+
+            // Tutorial card click handlers
+            document.querySelectorAll('.tutorial-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const tutorialId = card.getAttribute('data-tutorial');
+                    document.getElementById('tutorialMenuModal').remove();
+                    window.advancedTutorialSystem.startTutorial(tutorialId);
+                });
+            });
+
+            // Load progress display
+            this.updateTutorialProgress();
+
+            // Track analytics
+            if (this.analyticsDashboardController) {
+                this.analyticsDashboardController.trackAction('tutorial_menu_opened');
+            }
+
+            console.log('📚 Tutorial menu opened');
+        } else {
+            console.warn('Advanced Tutorial System não está disponível');
+            this.showNotification('Sistema de tutoriais não está disponível', 'warning');
+        }
+    }
+
+    updateTutorialProgress() {
+        if (!window.advancedTutorialSystem) return;
+
+        const progressDisplay = document.getElementById('progressDisplay');
+        const progress = window.advancedTutorialSystem.getTutorialProgress();
+        const tutorials = window.advancedTutorialSystem.getTutorials();
+
+        if (Object.keys(progress).length === 0) {
+            progressDisplay.innerHTML = '<p>Nenhum tutorial completado ainda. Comece com "Fundamentos de Ordenação"!</p>';
+            return;
+        }
+
+        let progressHTML = '<div class="progress-grid">';
+        
+        Object.keys(tutorials).forEach(tutorialId => {
+            const tutorial = tutorials[tutorialId];
+            const isCompleted = progress[tutorialId]?.completed || false;
+            
+            progressHTML += `
+                <div class="progress-item ${isCompleted ? 'completed' : 'incomplete'}">
+                    <div class="progress-icon">${isCompleted ? '✅' : '⏳'}</div>
+                    <div class="progress-info">
+                        <strong>${tutorial.title}</strong>
+                        <div class="progress-status">
+                            ${isCompleted ? 
+                                `Completado em ${new Date(progress[tutorialId].completedAt).toLocaleDateString()}` :
+                                'Não iniciado'
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        progressHTML += '</div>';
+        progressDisplay.innerHTML = progressHTML;
+    }
+    
+    // Método auxiliar para mostrar alertas
+    showAlert(title, message, type = 'info') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'custom-alert';
+        
+        const colors = {
+            error: { bg: '#ff4757', icon: '❌' },
+            warning: { bg: '#ffa502', icon: '⚠️' },
+            success: { bg: '#26de81', icon: '✅' },
+            info: { bg: '#667eea', icon: 'ℹ️' }
+        };
+        
+        const color = colors[type] || colors.info;
+        
+        alertDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${color.bg};
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 100000;
+            max-width: 350px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            animation: slideInAlert 0.5s ease-out;
+        `;
+        
+        alertDiv.innerHTML = `
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 1.5em; margin-right: 10px;">${color.icon}</span>
+                <strong style="font-size: 1.1em;">${title}</strong>
+            </div>
+            <p style="margin: 0; font-size: 0.95em;">${message}</p>
+        `;
+        
+        // Adiciona CSS da animação se não existir
+        if (!document.getElementById('alertAnimationStyle')) {
+            const style = document.createElement('style');
+            style.id = 'alertAnimationStyle';
+            style.textContent = `
+                @keyframes slideInAlert {
+                    from {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(alertDiv);
+        
+        // Remove após 5 segundos
+        setTimeout(() => {
+            alertDiv.style.animation = 'slideInAlert 0.5s ease-out reverse';
+            setTimeout(() => alertDiv.remove(), 500);
+        }, 5000);
+    }
+
+    // ===== AVL EDUCATIONAL SYSTEM METHODS =====
+    
+    openAVLEducational() {
+        try {
+            if (window.avlUIManager) {
+                window.avlUIManager.open();
+                console.log('🌳 Modo educacional AVL aberto');
+            } else if (typeof openAVLEducational === 'function') {
+                openAVLEducational();
+            } else {
+                console.warn('⚠️ Sistema educacional AVL não está disponível');
+                alert('Sistema educacional AVL está carregando. Tente novamente em alguns segundos.');
+            }
+        } catch (error) {
+            console.error('❌ Erro ao abrir AVL Educational:', error);
+            alert('Erro ao abrir modo educacional AVL');
+        }
+    }
 }
 
 // Initialize the application when DOM is loaded
@@ -1785,7 +2500,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('- G: Generate new array');
         console.log('- Escape: Back to selection');
         console.log('- 1-7: Select algorithm');
-        
+
     } catch (error) {
         console.error('❌ Erro ao inicializar aplicacao:', error);
         console.error('Stack trace:', error.stack);

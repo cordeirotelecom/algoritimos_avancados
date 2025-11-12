@@ -1,0 +1,352 @@
+/* ===== BALANCE FACTOR CALCULATOR STYLES ===== */
+
+.bf-calculator-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin: 2rem 0;
+}
+
+.bf-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid #667eea;
+}
+
+.bf-header h3 {
+    color: #667eea;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.8rem;
+}
+
+.bf-header p {
+    color: #6b7280;
+    margin: 0;
+}
+
+.bf-input-section {
+    margin-bottom: 2rem;
+}
+
+.bf-input-section label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.bf-input-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.bf-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.bf-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.bf-hint {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.bf-tree-display {
+    margin: 2rem 0;
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+#bf-calculator-canvas {
+    border-radius: 8px;
+    background: white;
+}
+
+.bf-node-selector {
+    margin: 2rem 0;
+}
+
+.bf-node-selector label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.bf-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.bf-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.bf-calculation-steps {
+    margin: 2rem 0;
+}
+
+.bf-calculation-steps h4 {
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+#bf-steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.step-card {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    animation: slideIn 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.step-card h5 {
+    color: #667eea;
+    margin: 0 0 0.75rem 0;
+    font-size: 1.1rem;
+}
+
+.step-card p {
+    color: #374151;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.step-detail {
+    margin-top: 0.5rem !important;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: #6b7280;
+}
+
+.formula-highlight {
+    background: white;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #667eea;
+    margin: 0.5rem 0;
+    border: 2px dashed #667eea;
+}
+
+.bf-result {
+    margin: 2rem 0;
+}
+
+.result-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.result-card h4 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.result-value {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.result-value .label {
+    font-weight: 500;
+}
+
+.result-value .value {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+    background: white;
+}
+
+.result-value .value.balanced-perfect {
+    color: #10b981;
+}
+
+.result-value .value.balanced {
+    color: #3b82f6;
+}
+
+.result-value .value.unbalanced {
+    color: #ef4444;
+}
+
+.result-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+}
+
+.status-icon {
+    font-size: 1.5rem;
+}
+
+.status-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.bf-legend {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f3f4f6;
+    border-radius: 8px;
+}
+
+.bf-legend h4 {
+    color: #374151;
+    margin: 0 0 1rem 0;
+}
+
+.legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.legend-box {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.legend-box.balanced-perfect {
+    background: #10b981;
+}
+
+.legend-box.balanced {
+    background: #3b82f6;
+}
+
+.legend-box.unbalanced {
+    background: #ef4444;
+}
+
+.bf-examples {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #fef3c7;
+    border-radius: 8px;
+    border-left: 4px solid #f59e0b;
+}
+
+.bf-examples h4 {
+    color: #92400e;
+    margin: 0 0 1rem 0;
+}
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.example-btn {
+    padding: 12px 20px;
+    background: white;
+    border: 2px solid #f59e0b;
+    border-radius: 8px;
+    color: #92400e;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.example-btn:hover {
+    background: #f59e0b;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bf-input-group {
+        flex-direction: column;
+    }
+
+    .bf-calculator-container {
+        padding: 1rem;
+    }
+
+    #bf-calculator-canvas {
+        width: 100%;
+        height: auto;
+    }
+
+    .examples-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .result-value {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+}

@@ -3,27 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algoritmos de Ordenação - Gamificado</title>
+    <meta name="description" content="Plataforma educacional interativa para ensino de Algoritmos e Análise de Complexidade">
+    <meta name="author" content="Prof. Eng. Computação Vagner Cordeiro">
+    <title>Algoritmos e Complexidade - Prof. Vagner Cordeiro</title>
+    
+    <!-- ==================== CSS STYLES ==================== -->
+    
+    <!-- CORE: Estilos Base -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/footer.css">
+    
+    <!-- FEATURES: Funcionalidades Específicas -->
+    <link rel="stylesheet" href="css/charts.css">
+    <link rel="stylesheet" href="css/comparison.css">
+    <link rel="stylesheet" href="css/analytics-dashboard.css">
+    
+    <!-- VISUALIZATION: Melhorias Visuais -->
+    <link rel="stylesheet" href="css/enhanced-visualization.css">
+    
+    <!-- MODULES: Navegação e Módulos -->
+    <link rel="stylesheet" href="css/module-navigation.css">
+    <link rel="stylesheet" href="css/trees-module.css">
+    <link rel="stylesheet" href="css/balance-factor-calculator.css">
+    
+    <!-- EDUCATIONAL: Conteúdo AVL -->
+    <link rel="stylesheet" href="css/avl-educational.css">
+    <link rel="stylesheet" href="css/avl-interactive-educational.css">
+    
+    <!-- GRAPHS: Módulo de Grafos -->
+    <link rel="stylesheet" href="css/graphs-module.css">
+    
+    <!-- FIXES: Correções de CSS -->
+    <link rel="stylesheet" href="css/fixes.css">
+    
+    <!-- FONTS: Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- DEBUG: Script de inicialização e captura de erros -->
+    <script src="js/debug-init.js"></script>
+    
+    <!-- EMERGENCY: Remove loading screen após 3 segundos -->
+    <script>
+        // Garante que a página não fique travada no loading
+        setTimeout(function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                console.warn('⚠️ Loading screen removido por timeout (3s)');
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => loadingScreen.remove(), 500);
+            }
+        }, 3000);
+        
+        // Tenta remover o loading quando o DOM carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM Content Loaded');
+            const loadingDetails = document.getElementById('loadingDetails');
+            if (loadingDetails) {
+                loadingDetails.textContent = 'Configurando interface...';
+            }
+        });
+    </script>
+    
+    <style>
+        /* Loading Screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease;
+        }
+        
+        #loadingScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Fallback: Remove loading after 3s if not removed by JS */
+        @keyframes autoHide {
+            0%, 95% { opacity: 1; }
+            100% { opacity: 0; display: none; }
+        }
+        
+        #loadingScreen {
+            animation: autoHide 3s forwards;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .loading-details {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">🎓 Carregando Plataforma...</div>
+            <div class="loading-details" id="loadingDetails">Inicializando módulos educacionais</div>
+        </div>
+    </div>
+    
     <div class="app-container">
         <!-- Header -->
         <header class="app-header">
             <div class="header-content">
-                <h1 class="app-title">📚 Algoritmos de Ordenação - Aprendizado Passo a Passo</h1>
+                <div class="header-main">
+                    <h1 class="app-title">🎓 Algoritmos e Complexidade</h1>
+                    <p class="header-subtitle">Por Prof. Eng. Computação Vagner Cordeiro</p>
+                </div>
                 <div class="simple-stats">
-                    <span class="current-progress" id="currentProgress">Selecione um algoritmo para começar</span>
+                    <span class="current-progress" id="currentProgress">Navegue pelos módulos educacionais</span>
                 </div>
             </div>
         </header>
 
+        <!-- Navigation Menu -->
+        <nav class="module-navigation" id="moduleNavigation">
+            <div class="nav-container">
+                <button class="nav-item active" data-module="sorting">
+                    <span class="nav-icon">🔄</span>
+                    <span class="nav-label">Algoritmos de Ordenação</span>
+                </button>
+                <button class="nav-item" data-module="functions">
+                    <span class="nav-icon">⚡</span>
+                    <span class="nav-label">Funções e Parâmetros</span>
+                </button>
+                <button class="nav-item" data-module="data-structures">
+                    <span class="nav-icon">📦</span>
+                    <span class="nav-label">Estruturas de Dados</span>
+                </button>
+                <button class="nav-item" data-module="complexity">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Análise de Complexidade</span>
+                </button>
+                <button class="nav-item" data-module="recursion">
+                    <span class="nav-icon">🔁</span>
+                    <span class="nav-label">Recursividade</span>
+                </button>
+                <button class="nav-item" data-module="trees">
+                    <span class="nav-icon">🌳</span>
+                    <span class="nav-label">Árvores Binárias</span>
+                </button>
+                <button class="nav-item" data-module="balanced-trees">
+                    <span class="nav-icon">⚖️</span>
+                    <span class="nav-label">Árvores Balanceadas</span>
+                </button>
+                <button class="nav-item" data-module="graphs">
+                    <span class="nav-icon">🕸️</span>
+                    <span class="nav-label">Grafos</span>
+                </button>
+            </div>
+        </nav>
+
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" id="mainContent">
             <!-- Algorithm Selection -->
             <section class="algorithm-selection">
                 <h2>Escolha um Algoritmo</h2>
@@ -118,6 +287,35 @@
                             <button id="pauseSort" class="btn btn-warning">⏸️ Pausar</button>
                             <button id="resumeSort" class="btn btn-info" style="display: none;">▶️ Continuar</button>
                             <button id="resetSort" class="btn btn-secondary">🔄 Recomeçar</button>
+                        </div>
+                        <div class="advanced-controls">
+                            <button id="openComparison" class="btn btn-special">🆚 Comparar Algoritmos</button>
+                            <button id="openAnalytics" class="btn btn-special">📊 Analytics Dashboard</button>
+                            <button id="openCharts" class="btn btn-special">📈 Gráficos de Performance</button>
+                            <button id="openTutorials" class="btn btn-special">📚 Tutoriais Interativos</button>
+                            <button id="openAVLEducational" class="btn btn-special">🌳 Aprender AVL</button>
+                        </div>
+                        <div class="enhanced-controls">
+                            <label>
+                                <input type="checkbox" id="enhancedVisualization" checked>
+                                🎨 Visualização Aprimorada
+                            </label>
+                            <label>
+                                Esquema de Cores:
+                                <select id="colorSchemeSelect">
+                                    <option value="default">Padrão</option>
+                                    <option value="dark">Escuro</option>
+                                    <option value="colorBlind">Daltônicos</option>
+                                </select>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="particlesEnabled" checked>
+                                ✨ Efeitos Visuais
+                            </label>
+                            <label>
+                                <input type="checkbox" id="realTimeStats" checked>
+                                📊 Estatísticas em Tempo Real
+                            </label>
                         </div>
                         <div class="speed-control">
                             <label for="speedSlider">Velocidade:</label>
@@ -571,21 +769,233 @@
             </div>
         </div>
 
+        <!-- Enhanced Comparison Modal -->
+        <div id="comparisonModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content comparison-modal">
+                <div class="modal-header">
+                    <h2>🆚 Comparação Avançada de Algoritmos</h2>
+                    <button class="modal-close" id="closeComparisonModal">&times;</button>
+                </div>
+                <div class="modal-body" id="comparisonModalBody">
+                    <!-- Conteúdo será gerado dinamicamente pelo ComparisonController -->
+                </div>
+            </div>
+        </div>
 
+        <!-- Analytics Dashboard Modal -->
+        <div id="analyticsModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content analytics-modal">
+                <div class="modal-header">
+                    <h2>📊 Analytics Dashboard</h2>
+                    <button class="modal-close" id="closeAnalyticsModal">&times;</button>
+                </div>
+                <div class="modal-body" id="analyticsModalBody">
+                    <!-- Conteúdo será gerado dinamicamente pelo AnalyticsDashboardController -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Modal -->
+        <div id="chartsModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content charts-modal">
+                <div class="modal-header">
+                    <h2>📈 Gráficos de Performance</h2>
+                    <button class="modal-close" id="closeChartsModal">&times;</button>
+                </div>
+                <div class="modal-body" id="chartsModalBody">
+                    <!-- Conteúdo será gerado dinamicamente pelo ChartsController -->
+                </div>
+            </div>
+        </div>
 
         <!-- Toast Notifications -->
         <div id="toastContainer" class="toast-container"></div>
+        
+        <!-- AVL EDUCATIONAL INTERACTIVE CONTAINER -->
+        <div id="avl-educational-container" style="display: none;"></div>
+        
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-stats">
+                <div class="stat-item">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Algoritmos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Módulos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">Conquistas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Funcional</div>
+                </div>
+            </div>
+
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>📚 Recursos</h3>
+                    <ul>
+                        <li><a href="#" onclick="document.getElementById('tutorialBtn').click(); return false;">🎓 Tutorial</a></li>
+                        <li><a href="#" onclick="document.getElementById('statsBtn').click(); return false;">📊 Estatísticas</a></li>
+                        <li><a href="#" onclick="document.getElementById('compareBtn').click(); return false;">🔄 Comparar</a></li>
+                        <li><a href="#">📖 Documentação</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>🎯 Sobre</h3>
+                    <ul>
+                        <li><a href="#">❓ FAQ</a></li>
+                        <li><a href="#">📧 Contato</a></li>
+                        <li><a href="#">⚖️ Termos de Uso</a></li>
+                        <li><a href="#">🔒 Privacidade</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>🔗 Conecte-se</h3>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" title="GitHub">
+                            <span>🐙</span>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <span>𝕏</span>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <span>💼</span>
+                        </a>
+                        <a href="#" class="social-link" title="YouTube">
+                            <span>▶️</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-credit">
+                    <p style="margin: 0;">🎓 Desenvolvido para Educação em Computação | Prof. Eng. Vagner Cordeiro | © 2025</p>
+                </div>
+                <a href="#" class="back-to-top" id="backToTop" title="Voltar ao topo">⬆️</a>
+            </div>
+        </footer>
     </div>
 
+    <!-- ==================== JAVASCRIPT ==================== -->
+    
+    <!-- CORE: Algoritmos e Estruturas Básicas -->
     <script src="js/algorithms.js"></script>
     <script src="js/visualization.js"></script>
     <script src="js/gamification.js"></script>
-    <script src="js/educational-system.js"></script>
+    
+    <!-- EDUCATIONAL: Sistema Educacional (UNIFICADO) -->
+    <script src="js/enhanced-educational-system.js"></script>
+    
+    <!-- FEATURES: Funcionalidades Adicionais -->
     <script src="js/sound-effects.js"></script>
     <script src="js/custom-data.js"></script>
     <script src="js/export-share.js"></script>
-    <script src="js/performance-monitor.js"></script>
-    <script src="js/accessibility-helper.js"></script>
+    
+    <!-- ADVANCED: Dashboards e Análises -->
+    <script src="js/charts-controller.js"></script>
+    <script src="js/comparison-controller.js"></script>
+    <script src="js/analytics-dashboard.js"></script>
+    <script src="js/simple-tutorial.js"></script>
+    
+    <!-- VISUALIZATION: Melhorias Visuais -->
+    <script src="js/enhanced-visualization.js"></script>
+    <script src="js/interactive-enhancements.js"></script>
+    
+    <!-- TREES: Árvores Binárias e Balanceadas -->
+    <script src="js/tree-controller.js"></script>
+    <script src="js/balanced-tree-controller.js"></script>
+    <script src="js/tree-examples.js"></script>
+    <script src="js/tree-visual-examples.js"></script>
+    <script src="js/balance-factor-calculator.js"></script>
+    
+    <!-- EDUCATIONAL: Conteúdo Educacional AVL -->
+    <script src="js/avl-interactive-educational.js"></script>
+    <script src="js/avl-interactive-ui.js"></script>
+    
+    <!-- GRAPHS: Visualizadores de Grafos -->
+    <script src="js/graph-visualization.js"></script>
+    <script src="js/graph-algorithms.js"></script>
+    
+    <!-- MODULES: Sistema de Módulos -->
+    <script src="js/module-system.js"></script>
+    <script src="js/modules/functions-module.js"></script>
+    <script src="js/modules/data-structures-module.js"></script>
+    <script src="js/modules/complexity-module.js"></script>
+    <script src="js/modules/recursion-module.js"></script>
+    <script src="js/modules/trees-module.js"></script>
+    <script src="js/avl-educational-content.js"></script>
+    <script src="js/modules/balanced-trees-module.js"></script>
+    <script src="js/modules/graphs-module.js"></script>
+    
+    <!-- APP: Controlador Principal -->
     <script src="js/app.js"></script>
+    
+    <!-- DIAGNOSTICS: Sistemas de Diagnóstico (DESABILITADOS) -->
+    <!-- Todos os sistemas de diagnóstico foram desabilitados -->
+    
+    <!-- UI ENHANCEMENTS: Melhorias de Interface -->
+    <script src="js/toast-notifications.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script src="js/keyboard-shortcuts.js"></script>
+    
+    <!-- COMPATIBILITY: Aliases para Compatibilidade -->
+    <script>
+        // Cria alias para compatibilidade com código antigo
+        if (typeof EnhancedEducationalController !== 'undefined' && !window.educationalController) {
+            // O enhanced educational controller já cria window.educationalController
+        }
+        
+        // Remove loading screen quando tudo carregar
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingDetails = document.getElementById('loadingDetails');
+            
+            loadingDetails.textContent = 'Tudo pronto! ✨';
+            
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                setTimeout(() => {
+                    loadingScreen.remove();
+                }, 500);
+            }, 800);
+        });
+        
+        // Update loading status
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingDetails = document.getElementById('loadingDetails');
+            if (loadingDetails) {
+                loadingDetails.textContent = 'Configurando interface...';
+            }
+        });
+    </script>
+    
+    <script>
+        // Back to Top Button
+        document.getElementById('backToTop').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Show back to top button when scrolling
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTop.style.opacity = '1';
+                backToTop.style.pointerEvents = 'auto';
+            } else {
+                backToTop.style.opacity = '0.3';
+                backToTop.style.pointerEvents = 'none';
+            }
+        });
+    </script>
 </body>
+
 </html>

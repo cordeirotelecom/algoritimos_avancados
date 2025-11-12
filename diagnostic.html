@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Mínimo - Debug Completo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .log-container {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 600px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #00ff00;
+            padding-left: 10px;
+        }
+        
+        .log-entry.error {
+            color: #ff4444;
+            border-left-color: #ff4444;
+        }
+        
+        .log-entry.success {
+            color: #00ff00;
+            border-left-color: #00ff00;
+        }
+        
+        .log-entry.warning {
+            color: #ffaa00;
+            border-left-color: #ffaa00;
+        }
+        
+        .log-entry.info {
+            color: #4da6ff;
+            border-left-color: #4da6ff;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .status.ok {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .status.fail {
+            background: #f44336;
+            color: white;
+        }
+        
+        .status.pending {
+            background: #ff9800;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Diagnóstico Completo - Plataforma de Algoritmos</h1>
+        
+        <div class="test-section">
+            <h3>Status Geral <span class="status pending" id="overallStatus">TESTANDO...</span></h3>
+            <p id="statusMessage">Executando testes...</p>
+        </div>
+        
+        <div class="log-container" id="logContainer">
+            <div class="log-entry info">Iniciando diagnóstico...</div>
+        </div>
+    </div>
+
+    <script>
+        const logContainer = document.getElementById('logContainer');
+        const overallStatus = document.getElementById('overallStatus');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        let errors = 0;
+        let warnings = 0;
+        let successes = 0;
+        
+        function log(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const time = new Date().toLocaleTimeString();
+            entry.textContent = `[${time}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            
+            if (type === 'error') errors++;
+            if (type === 'warning') warnings++;
+            if (type === 'success') successes++;
+            
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        log('🚀 Sistema de diagnóstico iniciado', 'info');
+        log(`📅 Data: ${new Date().toLocaleString()}`, 'info');
+        log(`🌐 URL: ${window.location.href}`, 'info');
+        
+        // Teste 1: Verificar DOM
+        log('━━━━━ TESTE 1: DOM ━━━━━', 'info');
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            log('✅ DOM carregado com sucesso', 'success');
+        } else {
+            log('⚠️ DOM ainda não está completamente carregado', 'warning');
+        }
+        
+        // Teste 2: Verificar arquivos CSS
+        log('━━━━━ TESTE 2: ARQUIVOS CSS ━━━━━', 'info');
+        const cssFiles = [
+            'css/styles.css',
+            'css/animations.css',
+            'css/graphs-module.css',
+            'css/fixes.css'
+        ];
+        
+        let cssChecked = 0;
+        cssFiles.forEach(file => {
+            fetch(file)
+                .then(response => {
+                    if (response.ok) {
+                        log(`✅ CSS OK: ${file}`, 'success');
+                    } else {
+                        log(`❌ CSS não encontrado: ${file} (Status: ${response.status})`, 'error');
+                    }
+                    cssChecked++;
+                    if (cssChecked === cssFiles.length) {
+                        checkJavaScript();
+                    }
+                })
+                .catch(error => {
+                    log(`❌ Erro ao buscar CSS: ${file} - ${error.message}`, 'error');
+                    cssChecked++;
+                    if (cssChecked === cssFiles.length) {
+                        checkJavaScript();
+                    }
+                });
+        });
+        
+        // Teste 3: Verificar e carregar arquivos JavaScript
+        function checkJavaScript() {
+            log('━━━━━ TESTE 3: ARQUIVOS JAVASCRIPT ━━━━━', 'info');
+            
+            const scripts = [
+                'js/algorithms.js',
+                'js/visualization.js',
+                'js/gamification.js',
+                'js/module-system.js',
+                'js/modules/graphs-module.js',
+                'js/graph-visualization.js',
+                'js/graph-algorithms.js',
+                'js/app.js'
+            ];
+            
+            let scriptsLoaded = 0;
+            
+            function loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    log(`📥 Carregando: ${src}...`, 'info');
+                    const script = document.createElement('script');
+                    script.src = src;
+                    script.onload = () => {
+                        log(`✅ Carregado: ${src}`, 'success');
+                        resolve();
+                    };
+                    script.onerror = () => {
+                        log(`❌ ERRO ao carregar: ${src}`, 'error');
+                        reject(new Error(`Failed to load ${src}`));
+                    };
+                    document.body.appendChild(script);
+                });
+            }
+            
+            // Carregar scripts em sequência
+            (async () => {
+                for (const script of scripts) {
+                    try {
+                        await loadScript(script);
+                        scriptsLoaded++;
+                    } catch (error) {
+                        log(`❌ Falha: ${script} - ${error.message}`, 'error');
+                    }
+                }
+                
+                log('━━━━━ TESTE 4: VERIFICAR CLASSES ━━━━━', 'info');
+                
+                // Aguardar um pouco para as classes serem definidas
+                setTimeout(() => {
+                    checkClasses();
+                }, 500);
+            })();
+        }
+        
+        // Teste 4: Verificar se as classes estão disponíveis
+        function checkClasses() {
+            const checks = [
+                { name: 'ALGORITHMS', check: () => typeof ALGORITHMS !== 'undefined' },
+                { name: 'VisualizationController', check: () => typeof VisualizationController !== 'undefined' },
+                { name: 'SimpleProgressController', check: () => typeof SimpleProgressController !== 'undefined' },
+                { name: 'window.progressController', check: () => window.progressController !== undefined },
+                { name: 'SortingGameApp', check: () => typeof SortingGameApp !== 'undefined' },
+                { name: 'ModuleSystemController', check: () => typeof ModuleSystemController !== 'undefined' },
+                { name: 'GraphsModule', check: () => typeof GraphsModule !== 'undefined' }
+            ];
+            
+            checks.forEach(check => {
+                if (check.check()) {
+                    log(`✅ ${check.name} disponível`, 'success');
+                } else {
+                    log(`❌ ${check.name} NÃO disponível`, 'error');
+                }
+            });
+            
+            log('━━━━━ TESTE 5: INICIALIZAR APP ━━━━━', 'info');
+            
+            // Tentar inicializar o app
+            setTimeout(() => {
+                tryInitializeApp();
+            }, 1000);
+        }
+        
+        // Teste 5: Tentar inicializar a aplicação
+        function tryInitializeApp() {
+            try {
+                if (typeof SortingGameApp !== 'undefined' && 
+                    typeof VisualizationController !== 'undefined' &&
+                    window.progressController) {
+                    
+                    log('🎮 Tentando inicializar SortingGameApp...', 'info');
+                    window.sortingApp = new SortingGameApp();
+                    log('✅ SortingGameApp inicializado com SUCESSO!', 'success');
+                    
+                } else {
+                    log('❌ Dependências faltando para inicializar SortingGameApp', 'error');
+                    
+                    if (typeof SortingGameApp === 'undefined') {
+                        log('   - SortingGameApp não definido', 'error');
+                    }
+                    if (typeof VisualizationController === 'undefined') {
+                        log('   - VisualizationController não definido', 'error');
+                    }
+                    if (!window.progressController) {
+                        log('   - progressController não definido', 'error');
+                    }
+                }
+            } catch (error) {
+                log(`❌ ERRO ao inicializar: ${error.message}`, 'error');
+                log(`   Stack: ${error.stack}`, 'error');
+            }
+            
+            finishDiagnostic();
+        }
+        
+        // Finalizar diagnóstico
+        function finishDiagnostic() {
+            log('━━━━━ RESULTADO FINAL ━━━━━', 'info');
+            log(`✅ Sucessos: ${successes}`, 'success');
+            log(`⚠️ Avisos: ${warnings}`, 'warning');
+            log(`❌ Erros: ${errors}`, 'error');
+            
+            if (errors === 0) {
+                overallStatus.textContent = 'TUDO OK';
+                overallStatus.className = 'status ok';
+                statusMessage.textContent = '✅ Sistema funcionando perfeitamente!';
+                log('🎉 DIAGNÓSTICO COMPLETO - SISTEMA OK!', 'success');
+            } else if (errors < 3) {
+                overallStatus.textContent = 'PARCIAL';
+                overallStatus.className = 'status pending';
+                statusMessage.textContent = `⚠️ Sistema parcialmente funcional (${errors} erros encontrados)`;
+                log('⚠️ Sistema com alguns problemas', 'warning');
+            } else {
+                overallStatus.textContent = 'COM PROBLEMAS';
+                overallStatus.className = 'status fail';
+                statusMessage.textContent = `❌ Sistema com problemas (${errors} erros)`;
+                log('❌ Sistema com problemas críticos', 'error');
+            }
+            
+            log('━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+            log('Diagnóstico concluído. Verifique os logs acima.', 'info');
+        }
+        
+        // Capturar erros globais
+        window.addEventListener('error', function(e) {
+            log(`❌ ERRO GLOBAL: ${e.message}`, 'error');
+            log(`   Arquivo: ${e.filename}:${e.lineno}:${e.colno}`, 'error');
+        });
+        
+        window.addEventListener('unhandledrejection', function(e) {
+            log(`❌ PROMISE REJEITADA: ${e.reason}`, 'error');
+        });
+    </script>
+</body>
+</html>

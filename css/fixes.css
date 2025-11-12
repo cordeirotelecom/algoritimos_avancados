@@ -1,0 +1,388 @@
+/* ===== CORREÇÕES DE CSS - FIX OVERLAPPING ELEMENTS ===== */
+
+/* Z-INDEX HIERARCHY - Normalizado */
+:root {
+    --z-base: 1;
+    --z-content: 10;
+    --z-nav: 100;
+    --z-tooltip: 500;
+    --z-modal: 1000;
+    --z-comparison: 1100;
+    --z-dashboard: 1200;
+    --z-notification: 1300;
+}
+
+/* Educational Tab Panes - Garantir que apenas aba ativa seja exibida */
+.edu-tab-pane {
+    display: none;
+}
+
+.edu-tab-pane.active {
+    display: block;
+}
+
+
+/* GARANTIR QUE MODAIS E OVERLAYS FIQUEM OCULTOS */
+
+/* Modal Overlays - Fix Global */
+.modal-overlay,
+#comparisonModal,
+#exportModal,
+#soundSettingsModal {
+    display: none !important;
+}
+
+.modal-overlay.active,
+#comparisonModal.active,
+#exportModal.active,
+#soundSettingsModal.active {
+    display: flex !important;
+}
+
+/* Analytics Dashboard - Fix */
+.analytics-dashboard,
+#analyticsDashboard {
+    display: none !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: var(--z-dashboard);
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.analytics-dashboard.active,
+#analyticsDashboard.active {
+    display: flex !important;
+}
+
+/* Comparison Modal - Fix */
+.comparison-container {
+    display: none !important;
+}
+
+.comparison-container.active {
+    display: block !important;
+}
+
+.comparison-modal {
+    z-index: var(--z-comparison) !important;
+}
+
+/* Tutorial Overlay - Fix */
+.tutorial-overlay {
+    display: none !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: var(--z-modal);
+}
+
+.tutorial-overlay.active {
+    display: flex !important;
+}
+
+/* Enhanced Visualization Modal - Fix */
+.enhanced-modal,
+.sound-settings-modal,
+.export-modal {
+    display: none !important;
+}
+
+.enhanced-modal.active,
+.sound-settings-modal.active,
+.export-modal.active {
+    display: block !important;
+}
+
+/* Module Content - Garantir que apenas módulo ativo seja exibido */
+.module-content {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.module-content.active {
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Educational Tab Panes - Garantir que apenas aba ativa seja exibida */
+.edu-tab-pane {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+}
+
+.edu-tab-pane.active {
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+    overflow: visible;
+}
+
+/* Educational Content Container */
+.educational-content {
+    position: relative;
+}
+
+/* Tab Navigation */
+.edu-tabs {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+.edu-tab-btn {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edu-tab-btn.active {
+    position: relative;
+}
+
+/* Prevenir que elementos com position fixed apareçam quando não devem */
+body > div:not(.active),
+body > section:not(.active) {
+    display: none;
+}
+
+/* Corrigir Z-Index dos componentes principais */
+.module-navigation {
+    z-index: var(--z-nav) !important;
+    position: relative;
+}
+
+header {
+    z-index: var(--z-nav) !important;
+    position: relative;
+}
+
+.toast-notifications {
+    z-index: var(--z-notification) !important;
+}
+
+/* Corrigir elementos de visualização */
+.visualization-container,
+.array-visualization {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+/* Garantir que tooltips apareçam acima */
+.tooltip,
+.element-tooltip,
+[data-tooltip] {
+    z-index: var(--z-tooltip) !important;
+}
+
+/* Prevenir overflow em containers */
+.container,
+.main-container {
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Fix para elementos position: fixed sem necessidade */
+.stats-panel:not(.floating) {
+    position: relative !important;
+}
+
+/* Corrigir sobreposição de cards */
+.card,
+.feature-card,
+.achievement-card {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+/* Garantir que backdrop de modais cubra tudo */
+.modal-backdrop,
+.overlay-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: calc(var(--z-modal) - 1);
+    display: none;
+}
+
+.modal-backdrop.active,
+.overlay-backdrop.active {
+    display: block;
+}
+
+/* Corrigir elementos que aparecem em todas as páginas */
+#comparison-section,
+#practice-exercises-section,
+#interactive-mode-section {
+    display: none;
+}
+
+/* Apenas exibir quando explicitamente ativado */
+.section-visible {
+    display: block !important;
+}
+
+/* Fix para gráficos e visualizações dentro de modais */
+.modal-content canvas,
+.modal-content svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Prevenir sobreposição de footers */
+footer {
+    position: relative;
+    z-index: var(--z-base);
+    margin-top: 3rem;
+}
+
+/* Corrigir animações que causam sobreposição */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Garantir que elementos ocultos não ocupem espaço */
+[hidden],
+.hidden,
+[style*="display: none"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Fix para elementos de comparação */
+.comparison-setup,
+.comparison-controls,
+.comparison-results {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+/* Corrigir layout de grid que pode sobrepor */
+.algorithm-grid,
+.features-grid {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+/* Fix para elementos flutuantes */
+.floating-controls,
+.floating-stats {
+    position: fixed;
+    z-index: var(--z-modal) !important;
+}
+
+/* Prevenir que elementos de background fiquem na frente */
+.background-decoration,
+.particles-enabled::before {
+    z-index: -1 !important;
+    pointer-events: none;
+}
+
+/* Corrigir sobreposição de botões */
+button,
+.btn,
+.button {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+/* Fix para dropdowns e menus */
+.dropdown-menu,
+.context-menu {
+    z-index: var(--z-tooltip) !important;
+}
+
+/* Garantir que seção de prática não apareça indevidamente */
+.practice-section {
+    display: none;
+}
+
+.practice-section.active {
+    display: block;
+}
+
+/* Corrigir visualização de árvores e grafos */
+.tree-canvas,
+.graph-canvas,
+#graphCanvas {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+/* Fix para painéis laterais */
+.sidebar,
+.side-panel {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+/* Prevenir sobreposição de headers de módulos */
+.module-header {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+/* Fix para elementos de arrastar e soltar */
+.draggable,
+.droppable {
+    position: relative;
+    z-index: calc(var(--z-content) + 1);
+}
+
+.dragging {
+    z-index: calc(var(--z-modal) - 1) !important;
+}
+
+/* Corrigir layout responsivo */
+@media (max-width: 768px) {
+    .analytics-dashboard,
+    .comparison-modal {
+        padding: 1rem;
+    }
+    
+    .modal-content {
+        max-width: 100% !important;
+        margin: 0;
+    }
+}
+
+/* Debug helper - remover em produção */
+.debug-overlay {
+    outline: 2px solid red;
+}
+
+.debug-zindex::after {
+    content: "z:" attr(data-z-index);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: yellow;
+    color: black;
+    padding: 2px 5px;
+    font-size: 10px;
+}

@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos - Versão Simplificada</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/graphs-module.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f5f7fa;
+        }
+        
+        .simple-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .simple-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.5rem;
+        }
+        
+        .simple-header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        .simple-nav {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+        
+        .content-area {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .module-display {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .module-display.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .welcome-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .welcome-screen h2 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .welcome-screen p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Estilos adicionais para módulo de grafos */
+        .module-section {
+            margin-bottom: 3rem;
+        }
+        
+        .module-section h3 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8f0fe 100%);
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .formula {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+        }
+        
+        @media (max-width: 768px) {
+            .simple-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .content-area {
+                padding: 0 1rem;
+            }
+            
+            .module-section h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="simple-header">
+        <h1>🎓 Algoritmos e Complexidade</h1>
+        <p>Prof. Eng. Computação Vagner Cordeiro</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="simple-nav">
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="showModule('welcome')">🏠 Início</button>
+            <button class="nav-btn" onclick="showModule('graphs')">🕸️ Grafos</button>
+            <button class="nav-btn" onclick="showModule('sorting')">🔄 Ordenação</button>
+            <button class="nav-btn" onclick="showModule('trees')">🌳 Árvores</button>
+            <button class="nav-btn" onclick="showModule('complexity')">📊 Complexidade</button>
+        </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class="content-area">
+        <!-- Welcome Screen -->
+        <div id="welcome" class="module-display active">
+            <div class="welcome-screen">
+                <h2>Bem-vindo à Plataforma Educacional! 🚀</h2>
+                <p>Aprenda algoritmos de forma interativa e visual. Escolha um módulo acima para começar.</p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>🕸️ Grafos</h3>
+                        <p>Explore teoria dos grafos, algoritmos de busca e caminhos mínimos</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔄 Ordenação</h3>
+                        <p>Visualize algoritmos de ordenação em ação</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🌳 Árvores</h3>
+                        <p>Entenda estruturas de árvores binárias e balanceadas</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📊 Análise</h3>
+                        <p>Aprenda sobre complexidade e Big-O notation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphs Module -->
+        <div id="graphs" class="module-display"></div>
+
+        <!-- Other Modules (placeholders) -->
+        <div id="sorting" class="module-display">
+            <h2>🔄 Módulo de Ordenação</h2>
+            <p>Em desenvolvimento...</p>
+        </div>
+
+        <div id="trees" class="module-display">
+            <h2>🌳 Módulo de Árvores</h2>
+            <p>Em desenvolvimento...</p>
+        </div>
+
+        <div id="complexity" class="module-display">
+            <h2>📊 Módulo de Complexidade</h2>
+            <p>Em desenvolvimento...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        console.log('🚀 Plataforma simplificada carregada');
+        
+        // Função para trocar módulos
+        function showModule(moduleName) {
+            console.log(`📱 Mostrando módulo: ${moduleName}`);
+            
+            // Esconder todos os módulos
+            document.querySelectorAll('.module-display').forEach(module => {
+                module.classList.remove('active');
+            });
+            
+            // Mostrar módulo selecionado
+            const selectedModule = document.getElementById(moduleName);
+            if (selectedModule) {
+                selectedModule.classList.add('active');
+            }
+            
+            // Atualizar botões
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Carregar conteúdo do módulo de grafos se necessário
+            if (moduleName === 'graphs') {
+                loadGraphsModule();
+            }
+        }
+        
+        // Carregar módulo de grafos
+        function loadGraphsModule() {
+            const graphsDiv = document.getElementById('graphs');
+            
+            if (graphsDiv.innerHTML.trim() === '') {
+                console.log('📥 Carregando módulo de grafos...');
+                
+                // Tentar usar o GraphsModule se disponível
+                if (typeof GraphsModule !== 'undefined' && GraphsModule.render) {
+                    graphsDiv.innerHTML = GraphsModule.render();
+                    console.log('✅ Módulo de grafos carregado com sucesso!');
+                    
+                    // Inicializar visualizadores se disponíveis
+                    setTimeout(() => {
+                        if (typeof window.initializeGraphVisualization === 'function') {
+                            window.initializeGraphVisualization();
+                        }
+                        if (typeof window.initializeGraphAlgorithms === 'function') {
+                            window.initializeGraphAlgorithms();
+                        }
+                    }, 300);
+                } else {
+                    // Conteúdo completo embutido
+                    graphsDiv.innerHTML = getCompleteGraphsContent();
+                    console.log('✅ Conteúdo completo de grafos carregado!');
+                }
+            }
+        }
+        
+        // Conteúdo completo do módulo de grafos
+        function getCompleteGraphsContent() {
+            return `
+                <div class="graphs-module">
+                    <div class="module-header">
+                        <h2>🕸️ Teoria dos Grafos</h2>
+                        <p class="module-description">
+                            Explore grafos, suas representações, algoritmos de busca (BFS, DFS), 
+                            caminhos mínimos (Dijkstra, Bellman-Ford) e muito mais!
+                        </p>
+                    </div>
+
+                    <!-- O que são Grafos -->
+                    <div class="module-section">
+                        <h3>📊 O que são Grafos?</h3>
+                        
+                        <div class="concept-card highlight">
+                            <h4>Definição</h4>
+                            <p>Um <strong>grafo</strong> G = (V, E) é uma estrutura matemática composta por:</p>
+                            <ul>
+                                <li><strong>V (Vértices/Nós):</strong> Conjunto de elementos</li>
+                                <li><strong>E (Arestas/Edges):</strong> Conjunto de conexões entre vértices</li>
+                            </ul>
+                            
+                            <div class="formula-box">
+                                <div class="formula">G = (V, E)</div>
+                            </div>
+                            
+                            <p style="margin-top: 1rem;">
+                                <strong>Exemplo visual:</strong>
+                            </p>
+                            <div class="graph-visual">
+                                <pre>
+    A --- B
+    |     |
+    C --- D
+    
+V = {A, B, C, D}
+E = {(A,B), (A,C), (B,D), (C,D)}
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tipos de Grafos -->
+                    <div class="module-section">
+                        <h3>🎯 Tipos de Grafos</h3>
+                        
+                        <div class="graph-types-grid">
+                            <div class="graph-type-card">
+                                <h4>Grafo Não-Direcionado</h4>
+                                <p>Arestas sem direção específica. A conexão é bidirecional.</p>
+                                <div class="graph-visual">
+                                    <pre>
+    A --- B
+    |     |
+    C --- D
+                                    </pre>
+                                </div>
+                                <p><strong>Exemplo:</strong> Rede social (amizade é recíproca)</p>
+                            </div>
+
+                            <div class="graph-type-card">
+                                <h4>Grafo Direcionado (Dígrafo)</h4>
+                                <p>Arestas com direção específica (arcos).</p>
+                                <div class="graph-visual">
+                                    <pre>
+    A → B
+    ↓   ↓
+    C → D
+                                    </pre>
+                                </div>
+                                <p><strong>Exemplo:</strong> Páginas web (links unidirecionais)</p>
+                            </div>
+
+                            <div class="graph-type-card">
+                                <h4>Grafo Ponderado</h4>
+                                <p>Arestas possuem pesos/custos associados.</p>
+                                <div class="graph-visual">
+                                    <pre>
+    A --5-- B
+    |3      |2
+    C --4-- D
+                                    </pre>
+                                </div>
+                                <p><strong>Exemplo:</strong> Mapa de cidades (distâncias)</p>
+                            </div>
+
+                            <div class="graph-type-card">
+                                <h4>Grafo Cíclico</h4>
+                                <p>Contém pelo menos um ciclo (caminho que retorna ao vértice inicial).</p>
+                                <div class="graph-visual">
+                                    <pre>
+    A → B
+    ↑   ↓
+    D ← C
+                                    </pre>
+                                </div>
+                                <p><strong>Ciclo:</strong> A → B → C → D → A</p>
+                            </div>
+
+                            <div class="graph-type-card">
+                                <h4>Grafo Acíclico (DAG)</h4>
+                                <p>Não contém ciclos. Muito usado em ordenação topológica.</p>
+                                <div class="graph-visual">
+                                    <pre>
+    A → B → D
+    ↓   ↓
+    C → E
+                                    </pre>
+                                </div>
+                                <p><strong>Exemplo:</strong> Dependências de tarefas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Representações -->
+                    <div class="module-section">
+                        <h3>📈 Representações de Grafos</h3>
+                        
+                        <div class="concept-card">
+                            <h4>1. Matriz de Adjacência</h4>
+                            <p>Matriz V × V onde M[i][j] indica se existe aresta entre i e j.</p>
+                            <div class="formula-box">
+                                <p><strong>Complexidade:</strong> Espaço O(V²)</p>
+                            </div>
+                            <div class="graph-visual">
+                                <pre>
+Grafo:        Matriz:
+  0 --- 1       0  1  2
+  |     |     0[0, 1, 1]
+  2           1[1, 0, 0]
+              2[1, 0, 0]
+                                </pre>
+                            </div>
+                            <p><strong>Vantagens:</strong> Acesso rápido O(1), bom para grafos densos</p>
+                            <p><strong>Desvantagens:</strong> Usa muito espaço em grafos esparsos</p>
+                        </div>
+
+                        <div class="concept-card">
+                            <h4>2. Lista de Adjacência</h4>
+                            <p>Para cada vértice, lista de seus vizinhos.</p>
+                            <div class="formula-box">
+                                <p><strong>Complexidade:</strong> Espaço O(V + E)</p>
+                            </div>
+                            <div class="graph-visual">
+                                <pre>
+Grafo:        Lista:
+  0 --- 1     0 → [1, 2]
+  |     |     1 → [0]
+  2           2 → [0]
+                                </pre>
+                            </div>
+                            <p><strong>Vantagens:</strong> Eficiente em espaço para grafos esparsos</p>
+                            <p><strong>Desvantagens:</strong> Verificar aresta é O(grau)</p>
+                        </div>
+
+                        <div class="concept-card">
+                            <h4>3. Lista de Arestas</h4>
+                            <p>Lista simples de todas as arestas (u, v, peso).</p>
+                            <div class="formula-box">
+                                <p><strong>Complexidade:</strong> Espaço O(E)</p>
+                            </div>
+                            <div class="graph-visual">
+                                <pre>
+Grafo:        Lista:
+  0 --5-- 1   [(0, 1, 5),
+  |3      |2   (0, 2, 3),
+  2 --4-- 3    (1, 3, 2),
+               (2, 3, 4)]
+                                </pre>
+                            </div>
+                            <p><strong>Uso:</strong> Algoritmos como Kruskal (MST)</p>
+                        </div>
+                    </div>
+
+                    <!-- Algoritmos de Busca -->
+                    <div class="module-section">
+                        <h3>🔍 Algoritmos de Busca</h3>
+                        
+                        <div class="concept-card highlight">
+                            <h4>BFS - Busca em Largura (Breadth-First Search)</h4>
+                            <p>Explora o grafo nível por nível, usando uma <strong>fila</strong>.</p>
+                            
+                            <div class="formula-box">
+                                <p><strong>Complexidade:</strong> O(V + E)</p>
+                                <p><strong>Uso:</strong> Caminho mais curto (não ponderado), distância mínima</p>
+                            </div>
+                            
+                            <div class="graph-visual">
+                                <pre>
+Pseudocódigo BFS:
+━━━━━━━━━━━━━━━━━━━━━━━━
+BFS(grafo, inicio):
+    fila = [inicio]
+    visitados = {inicio}
+    
+    enquanto fila não vazia:
+        atual = fila.remover_primeiro()
+        processar(atual)
+        
+        para cada vizinho de atual:
+            se vizinho não visitado:
+                visitados.adicionar(vizinho)
+                fila.adicionar(vizinho)
+                                </pre>
+                            </div>
+                            
+                            <p><strong>Aplicações:</strong></p>
+                            <ul>
+                                <li>Menor caminho em grafos não ponderados</li>
+                                <li>Verificar se grafo é conexo</li>
+                                <li>Encontrar componentes conectadas</li>
+                                <li>Web crawling (rastreamento de páginas)</li>
+                            </ul>
+                        </div>
+
+                        <div class="concept-card highlight">
+                            <h4>DFS - Busca em Profundidade (Depth-First Search)</h4>
+                            <p>Explora o grafo o mais profundo possível, usando uma <strong>pilha</strong> (ou recursão).</p>
+                            
+                            <div class="formula-box">
+                                <p><strong>Complexidade:</strong> O(V + E)</p>
+                                <p><strong>Uso:</strong> Detectar ciclos, ordenação topológica</p>
+                            </div>
+                            
+                            <div class="graph-visual">
+                                <pre>
+Pseudocódigo DFS:
+━━━━━━━━━━━━━━━━━━━━━━━━
+DFS(grafo, inicio):
+    visitados = conjunto vazio
+    
+    DFS_recursivo(vertice):
+        visitados.adicionar(vertice)
+        processar(vertice)
+        
+        para cada vizinho de vertice:
+            se vizinho não visitado:
+                DFS_recursivo(vizinho)
+    
+    DFS_recursivo(inicio)
+                                </pre>
+                            </div>
+                            
+                            <p><strong>Aplicações:</strong></p>
+                            <ul>
+                                <li>Detectar ciclos em grafos</li>
+                                <li>Ordenação topológica (DAGs)</li>
+                                <li>Encontrar componentes fortemente conectadas</li>
+                                <li>Resolver labirintos e puzzles</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Caminhos Mínimos -->
+                    <div class="module-section">
+                        <h3>🛣️ Algoritmos de Caminhos Mínimos</h3>
+                        
+                        <div class="concept-card highlight">
+                            <h4>Algoritmo de Dijkstra</h4>
+                            <p>Encontra o caminho mais curto de um vértice para todos os outros em grafos com <strong>pesos não-negativos</strong>.</p>
+                            
+                            <div class="formula-box">
+                                <p><strong>Complexidade:</strong> O((V + E) log V) com heap</p>
+                                <p><strong>Restrição:</strong> Não funciona com pesos negativos</p>
+                            </div>
+                            
+                            <div class="graph-visual">
+                                <pre>
+Pseudocódigo Dijkstra:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Dijkstra(grafo, origem):
+    distancia = {v: ∞ para todo v}
+    distancia[origem] = 0
+    heap = [(0, origem)]
+    visitados = conjunto vazio
+    
+    enquanto heap não vazio:
+        dist, u = heap.extrair_minimo()
+        
+        se u em visitados:
+            continuar
+        
+        visitados.adicionar(u)
+        
+        para cada vizinho v de u:
+            nova_dist = dist + peso(u, v)
+            se nova_dist < distancia[v]:
+                distancia[v] = nova_dist
+                heap.adicionar((nova_dist, v))
+    
+    retornar distancia
+                                </pre>
+                            </div>
+                            
+                            <p><strong>Exemplo:</strong></p>
+                            <div class="graph-visual">
+                                <pre>
+    A --1-- B
+    |2      |3
+    C --1-- D
+    
+Dijkstra de A:
+Dist(A) = 0
+Dist(B) = 1
+Dist(C) = 2
+Dist(D) = 3
+                                </pre>
+                            </div>
+                            
+                            <p><strong>Aplicações:</strong></p>
+                            <ul>
+                                <li>Sistemas de GPS e navegação</li>
+                                <li>Roteamento de redes</li>
+                                <li>Jogos (pathfinding)</li>
+                            </ul>
+                        </div>
+
+                        <div class="concept-card">
+                            <h4>Algoritmo de Bellman-Ford</h4>
+                            <p>Encontra caminhos mínimos mesmo com <strong>pesos negativos</strong>. Detecta ciclos negativos.</p>
+                            
+                            <div class="formula-box">
+                                <p><strong>Complexidade:</strong> O(V × E)</p>
+                                <p><strong>Vantagem:</strong> Funciona com pesos negativos</p>
+                            </div>
+                            
+                            <div class="graph-visual">
+                                <pre>
+Pseudocódigo Bellman-Ford:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BellmanFord(grafo, origem):
+    distancia = {v: ∞ para todo v}
+    distancia[origem] = 0
+    
+    repetir V-1 vezes:
+        para cada aresta (u, v, peso):
+            se distancia[u] + peso < distancia[v]:
+                distancia[v] = distancia[u] + peso
+    
+    // Detectar ciclo negativo
+    para cada aresta (u, v, peso):
+        se distancia[u] + peso < distancia[v]:
+            retornar "Ciclo negativo detectado"
+    
+    retornar distancia
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aplicações Práticas -->
+                    <div class="module-section">
+                        <h3>🌍 Aplicações Práticas de Grafos</h3>
+                        
+                        <div class="applications-grid">
+                            <div class="application-card">
+                                <h4>🌐 Redes de Computadores</h4>
+                                <p>Modelagem de rotas, protocolos de roteamento, detecção de falhas e otimização de tráfego.</p>
+                            </div>
+
+                            <div class="application-card">
+                                <h4>👥 Redes Sociais</h4>
+                                <p>Conexões entre usuários, sugestões de amigos, comunidades, influenciadores.</p>
+                            </div>
+
+                            <div class="application-card">
+                                <h4>🗺️ GPS e Navegação</h4>
+                                <p>Calcular rotas mais rápidas, evitar congestionamentos, otimizar entregas.</p>
+                            </div>
+
+                            <div class="application-card">
+                                <h4>📅 Planejamento de Projetos</h4>
+                                <p>Ordenação topológica de tarefas, identificação de caminho crítico (CPM).</p>
+                            </div>
+
+                            <div class="application-card">
+                                <h4>🔗 Análise de Dependências</h4>
+                                <p>Gerenciamento de pacotes, compilação de código, resolução de imports.</p>
+                            </div>
+
+                            <div class="application-card">
+                                <h4>🛒 Sistemas de Recomendação</h4>
+                                <p>Produtos relacionados, sugestões personalizadas, filtragem colaborativa.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documentação -->
+                    <div class="module-section">
+                        <h3>📚 Documentação Completa</h3>
+                        
+                        <div class="concept-card">
+                            <h4>Materiais de Estudo</h4>
+                            <p>Para aprofundar seus conhecimentos, consulte:</p>
+                            <ul>
+                                <li><strong>GRAFOS_GUIA_COMPLETO.md</strong> - Teoria detalhada com código</li>
+                                <li><strong>GRAFOS_EXERCICIOS.md</strong> - 15 exercícios com gabarito (4 níveis)</li>
+                                <li><strong>GRAFOS_INDICE.md</strong> - Índice de navegação e plano de estudos</li>
+                                <li><strong>GRAFOS_STATUS_COMPLETO.md</strong> - Status e recursos implementados</li>
+                            </ul>
+                        </div>
+
+                        <div class="concept-card highlight">
+                            <h4>Complexidades - Resumo</h4>
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                                <thead>
+                                    <tr style="background: #667eea; color: white;">
+                                        <th style="padding: 0.8rem; text-align: left;">Algoritmo</th>
+                                        <th style="padding: 0.8rem; text-align: left;">Complexidade</th>
+                                        <th style="padding: 0.8rem; text-align: left;">Uso</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                                        <td style="padding: 0.8rem;"><strong>BFS</strong></td>
+                                        <td style="padding: 0.8rem;">O(V + E)</td>
+                                        <td style="padding: 0.8rem;">Caminho mais curto (não ponderado)</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                                        <td style="padding: 0.8rem;"><strong>DFS</strong></td>
+                                        <td style="padding: 0.8rem;">O(V + E)</td>
+                                        <td style="padding: 0.8rem;">Detectar ciclos, topológica</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                                        <td style="padding: 0.8rem;"><strong>Dijkstra</strong></td>
+                                        <td style="padding: 0.8rem;">O((V+E)logV)</td>
+                                        <td style="padding: 0.8rem;">Caminho mínimo (sem negativos)</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.8rem;"><strong>Bellman-Ford</strong></td>
+                                        <td style="padding: 0.8rem;">O(V × E)</td>
+                                        <td style="padding: 0.8rem;">Caminho mínimo (com negativos)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Exercícios Rápidos -->
+                    <div class="module-section">
+                        <h3>✏️ Exercícios Rápidos</h3>
+                        
+                        <div class="concept-card">
+                            <h4>Nível 1: Básico</h4>
+                            <p><strong>1.</strong> Quantos vértices e arestas tem este grafo?</p>
+                            <div class="graph-visual">
+                                <pre>
+    A --- B
+    |     |
+    C --- D
+                                </pre>
+                            </div>
+                            <p style="color: #667eea; margin-top: 0.5rem;">
+                                <strong>Resposta:</strong> 4 vértices (A, B, C, D) e 4 arestas
+                            </p>
+                        </div>
+
+                        <div class="concept-card">
+                            <h4>Nível 2: Intermediário</h4>
+                            <p><strong>2.</strong> Execute BFS começando em A. Qual a ordem de visita?</p>
+                            <div class="graph-visual">
+                                <pre>
+      A
+     / \\
+    B   C
+   /
+  D
+                                </pre>
+                            </div>
+                            <p style="color: #667eea; margin-top: 0.5rem;">
+                                <strong>Resposta:</strong> A → B → C → D
+                            </p>
+                        </div>
+
+                        <div class="concept-card">
+                            <h4>Mais Exercícios</h4>
+                            <p>Para 13 exercícios adicionais com soluções detalhadas, consulte:</p>
+                            <p><strong>GRAFOS_EXERCICIOS.md</strong></p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+    
+    <!-- Try to load GraphsModule -->
+    <script src="js/modules/graphs-module.js"></script>
+    
+    <script>
+        // Log de inicialização
+        console.log('✅ Plataforma pronta!');
+        console.log('📍 Use os botões de navegação acima');
+    </script>
+</body>
+</html>

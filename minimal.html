@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos e Complexidade - Teste Mínimo</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>🎓 Algoritmos de Ordenação</h1>
+                <p>Versão Mínima de Teste</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <div id="testDiv" style="padding: 2rem; background: white; border-radius: 12px; margin: 2rem 0;">
+                    <h2>✅ Página Carregando</h2>
+                    <p>Se você vê esta mensagem, o HTML básico está funcionando.</p>
+                    <div id="jsTest"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        console.log('✅ JavaScript carregado');
+        document.getElementById('jsTest').innerHTML = '<p style="color: green; font-weight: bold;">✅ JavaScript funcionando!</p>';
+        
+        // Testar se o CSS está carregado
+        const testDiv = document.getElementById('testDiv');
+        const computed = window.getComputedStyle(testDiv);
+        console.log('Padding do testDiv:', computed.padding);
+        
+        if (computed.padding !== '0px') {
+            console.log('✅ CSS carregado');
+        } else {
+            console.log('❌ CSS não carregado');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Página Funcionando</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .card {
+            background: white;
+            color: #333;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .status {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            margin: 0 0 1rem 0;
+            color: #667eea;
+        }
+        .info {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: left;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="status">✅</div>
+        <h1>Servidor Funcionando!</h1>
+        <p>O servidor HTTP está ativo e respondendo corretamente.</p>
+        
+        <div class="info">
+            <strong>🌐 URL:</strong> http://localhost:8000<br>
+            <strong>📁 Diretório:</strong> algoritimos avancados<br>
+            <strong>⏰ Teste:</strong> <span id="time"></span>
+        </div>
+
+        <a href="index.html" class="btn">
+            🚀 Ir para Página Principal
+        </a>
+    </div>
+
+    <script>
+        // Mostrar hora atual
+        document.getElementById('time').textContent = new Date().toLocaleTimeString('pt-BR');
+        
+        // Testar se index.html está acessível
+        fetch('index.html')
+            .then(response => {
+                if (response.ok) {
+                    console.log('✅ index.html acessível');
+                } else {
+                    console.error('❌ Erro ao acessar index.html');
+                }
+            })
+            .catch(error => {
+                console.error('❌ Erro de rede:', error);
+            });
+    </script>
+</body>
+</html>
