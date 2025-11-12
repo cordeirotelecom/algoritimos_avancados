@@ -1,114 +1,226 @@
-# 🎓 Algoritmos e Complexidade# 🎓 Algoritmos e Complexidade
+# Algoritmos Avançados 📚# 🎓 Algoritmos e Complexidade# 🎓 Algoritmos e Complexidade
 
 
 
-## Plataforma Educacional Interativa## Plataforma Educacional Interativa
+Plataforma educacional interativa para ensino de **Algoritmos, Estruturas de Dados e Análise de Complexidade**.
 
 
 
-Uma aplicação web completa e interativa para ensino e aprendizado de Algoritmos, Estruturas de Dados e Análise de Complexidade.Uma aplicação web completa e interativa para ensino e aprendizado de Algoritmos, Estruturas de Dados e Análise de Complexidade.
+## 🎯 Recursos## Plataforma Educacional Interativa## Plataforma Educacional Interativa
 
 
+
+- ⚡ **Simulador de Dijkstra**: Visualização passo a passo do algoritmo de caminho mais curto
+
+- 📊 **Introdução a Grafos**: Conceitos, tipos, algoritmos e exercícios práticos
+
+- 🎓 **Conteúdo Educacional**: Explicações didáticas com exemplos interativosUma aplicação web completa e interativa para ensino e aprendizado de Algoritmos, Estruturas de Dados e Análise de Complexidade.Uma aplicação web completa e interativa para ensino e aprendizado de Algoritmos, Estruturas de Dados e Análise de Complexidade.
+
+- 🚀 **Performance**: Construído com Next.js 14 para excelente performance
+
+
+
+## 🛠️ Tecnologias
 
 **Desenvolvido por: Prof. Eng. Computação Vagner Cordeiro****Desenvolvido por: Prof. Eng. Computação Vagner Cordeiro**
 
+- **Frontend**: React 18, Next.js 14
 
+- **Estilização**: CSS3 com Animations
 
-![Status](https://img.shields.io/badge/Status-Ready-success) ![License](https://img.shields.io/badge/License-MIT-blue) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)![Preview](https://img.shields.io/badge/Status-Ready-success) ![License](https://img.shields.io/badge/License-MIT-blue) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+- **Visualização**: SVG e Canvas
 
-
-
-------
-
-
-
-## 🚀 Como Executar## 🚀 Demo Online
+- **Deployment**: Vercel![Status](https://img.shields.io/badge/Status-Ready-success) ![License](https://img.shields.io/badge/License-MIT-blue) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)![Preview](https://img.shields.io/badge/Status-Ready-success) ![License](https://img.shields.io/badge/License-MIT-blue) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 
 
 
-### Método 1: Servidor Python (Recomendado)**🌐 [Acesse a Aplicação](https://algoritimos-avancados.vercel.app)**
+## 📦 Instalação e Execução
 
 
 
-```bash**📂 [Repositório GitHub](https://github.com/cordeirotelecom/algoritimos_avancados)**
-
-python -m http.server 8000
-
-```---
+### Desenvolvimento------
 
 
 
-Acesse: `http://localhost:8000`## 📚 Módulos Educacionais
+```bash
+
+# Instalar dependências
+
+npm install## 🚀 Como Executar## 🚀 Demo Online
 
 
 
-### Método 2: NPM Script### 1. 🔄 Algoritmos de Ordenação
+# Iniciar servidor de desenvolvimento
 
-- Bubble Sort, Selection Sort, Insertion Sort
+npm run dev
 
-```bash- Quick Sort, Merge Sort, Heap Sort
+```### Método 1: Servidor Python (Recomendado)**🌐 [Acesse a Aplicação](https://algoritimos-avancados.vercel.app)**
 
-npm run dev- Radix Sort
 
-# ou- Visualização interativa passo a passo
 
-npm start- Sistema de gamificação com pontos e conquistas
+Acesse `http://localhost:3000` no navegador.
+
+
+
+### Produção```bash**📂 [Repositório GitHub](https://github.com/cordeirotelecom/algoritimos_avancados)**
+
+
+
+```bashpython -m http.server 8000
+
+# Build para produção
+
+npm run build```---
+
+
+
+# Executar build de produção localmente
+
+npm start
+
+```Acesse: `http://localhost:8000`## 📚 Módulos Educacionais
+
+
+
+## 📁 Estrutura do Projeto
+
+
+
+```### Método 2: NPM Script### 1. 🔄 Algoritmos de Ordenação
+
+app/
+
+├── page.jsx              # Página inicial- Bubble Sort, Selection Sort, Insertion Sort
+
+├── layout.jsx            # Layout raiz
+
+├── dijkstra/```bash- Quick Sort, Merge Sort, Heap Sort
+
+│   └── page.jsx          # Simulador de Dijkstra
+
+├── grafos/npm run dev- Radix Sort
+
+│   └── page.jsx          # Módulo de Grafos
+
+└── styles/# ou- Visualização interativa passo a passo
+
+    ├── dijkstra.css      # Estilos do simulador
+
+    └── grafos.css        # Estilos do módulo de grafosnpm start- Sistema de gamificação com pontos e conquistas
 
 ```
 
+```
+
+## 🚀 Deploy
+
 ### 2. ⚡ Funções e Parâmetros
+
+O projeto é automaticamente deployado no Vercel quando há push para a branch `main`.
 
 ### Método 3: VS Code Task- Conceitos fundamentais de funções
 
+**URL**: [algoritimosavancados.vercel.app](https://algoritimosavancados.vercel.app)
+
 - Passagem por valor vs. referência
+
+## 📚 Módulos Disponíveis
 
 Pressione `Ctrl+Shift+B` e selecione "Abrir Servidor Local"- Escopo de variáveis
 
-- Recursividade básica
+### 1. Simulador de Dijkstra
 
----- Exemplos práticos interativos
+Visualize o algoritmo de Dijkstra em tempo real:- Recursividade básica
+
+- Grafo interativo com 5 nós e 7 arestas ponderadas
+
+- Passo a passo da execução---- Exemplos práticos interativos
+
+- Tabela de cálculo detalhada
+
+- Visualização das distâncias e predecessores
 
 
 
-## 📚 Módulos Educacionais### 3. 📦 Estruturas de Dados
+### 2. Grafos## 📚 Módulos Educacionais### 3. 📦 Estruturas de Dados
 
-- Arrays e matrizes
+Aprenda sobre estruturas de grafos:
 
-### 1. 🔄 **Algoritmos de Ordenação**- Estruturas heterogêneas (structs)
+- Conceitos básicos (vértices, arestas, caminhos, ciclos)- Arrays e matrizes
+
+- Tipos de grafos (simples, direcionado, ponderado)
+
+- Algoritmos principais (BFS, DFS, Dijkstra, Floyd-Warshall, Prim, Kruskal)### 1. 🔄 **Algoritmos de Ordenação**- Estruturas heterogêneas (structs)
+
+- Exercícios práticos
 
 - Bubble Sort, Selection Sort, Insertion Sort- Ponteiros e referências
 
+## 🎓 Para Usuários
+
 - Quick Sort, Merge Sort, Heap Sort, Radix Sort- Alocação dinâmica
 
-- Visualização animada passo a passo- Demonstrações visuais
+Acesse a plataforma em [algoritimosavancados.vercel.app](https://algoritimosavancados.vercel.app) para:
 
-- Sistema de gamificação completo
+1. Aprender sobre algoritmos de forma interativa- Visualização animada passo a passo- Demonstrações visuais
+
+2. Visualizar a execução passo a passo
+
+3. Resolver exercícios práticos- Sistema de gamificação completo
+
+4. Compreender complexidade de tempo e espaço
 
 ### 4. 📊 Análise de Complexidade
 
+## 👨‍💻 Desenvolvimento
+
 ### 2. ⚡ **Funções e Parâmetros**- Notação Big-O
+
+Este projeto foi desenvolvido como plataforma educacional para ensino de algoritmos avançados.
 
 - Conceitos fundamentais- Análise de melhor, médio e pior caso
 
+### Contribuindo
+
 - Passagem por valor vs. referência- Complexidade de tempo e espaço
 
-- Escopo de variáveis- Comparação entre algoritmos
+Para contribuir:
 
-- Exemplos interativos- Calculadora de complexidade
+1. Faça um fork do projeto- Escopo de variáveis- Comparação entre algoritmos
+
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)- Exemplos interativos- Calculadora de complexidade
+
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+
+5. Abra um Pull Request
 
 
 
-### 3. 📦 **Estruturas de Dados**### 5. 🔁 Recursividade
+## 📄 Licença### 3. 📦 **Estruturas de Dados**### 5. 🔁 Recursividade
 
-- Arrays e matrizes- Definições recursivas
 
-- Estruturas heterogêneas (structs)- Casos base e recursivos
 
-- Ponteiros e referências- Torres de Hanoi
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.- Arrays e matrizes- Definições recursivas
 
-- Demonstrações visuais- Quando usar e quando evitar
 
-- Análise de chamadas recursivas
+
+## 📧 Contato- Estruturas heterogêneas (structs)- Casos base e recursivos
+
+
+
+Desenvolvido por Prof. Eng. Computação Vagner Cordeiro- Ponteiros e referências- Torres de Hanoi
+
+
+
+---- Demonstrações visuais- Quando usar e quando evitar
+
+
+
+**Versão**: 3.0.0  - Análise de chamadas recursivas
+
+**Última atualização**: 12 de Novembro de 2025
 
 ### 4. 📊 **Análise de Complexidade**
 
