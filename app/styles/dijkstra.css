@@ -1,0 +1,63 @@
+.dijkstra-container {
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.dijkstra-header {
+  background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.dijkstra-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.dijkstra-header p {
+  margin: 0;
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+.dijkstra-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.dijkstra-content {
+  display: grid;
+  grid-template-columns: 1fr 450px;
+  gap: 2rem;
+}
+
+.dijkstra-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.dijkstra-card h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #212529;
+}
+
+.dijkstra-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .dijkstra-content {
+    grid-template-columns: 1fr;
+  }
+}
