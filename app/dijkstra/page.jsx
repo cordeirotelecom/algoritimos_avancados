@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/dijkstra.css';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export default function DijkstraPage() {
   // Grafo de exemplo
   const grafo = {

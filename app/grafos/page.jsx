@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export default function GrafosPage() {
   const [activeTab, setActiveTab] = useState('conceitos');
   const [selectedGraph, setSelectedGraph] = useState('tipo1');

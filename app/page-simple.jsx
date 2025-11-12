@@ -2,9 +2,6 @@
 
 import Link from 'next/link';
 
-// Force dynamic rendering - no static generation
-export const dynamic = 'force-dynamic';
-
 export default function Home() {
   const modules = [
     {
